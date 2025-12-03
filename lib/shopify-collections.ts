@@ -45,7 +45,7 @@ async function getCollectionProductsCount(handle: string): Promise<number> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken || '',
       },
       body: JSON.stringify({
         query: countQuery,
@@ -101,7 +101,7 @@ export async function getAllCollections(): Promise<Collection[]> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken || '',
       },
       body: JSON.stringify({ query }),
     })
@@ -138,7 +138,7 @@ export async function getAllCollections(): Promise<Collection[]> {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+              'X-Shopify-Storefront-Access-Token': storefrontAccessToken || '',
             },
             body: JSON.stringify({
               query: countQuery,
@@ -218,7 +218,7 @@ export async function getCollectionByHandle(handle: string): Promise<Collection>
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken || '',
       },
       body: JSON.stringify({
         query,
@@ -317,7 +317,7 @@ export async function getCollectionProducts(collectionHandle: string, first: num
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken || '',
       },
       body: JSON.stringify({
         query,
