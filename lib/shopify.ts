@@ -89,7 +89,7 @@ export async function getAllProducts(): Promise<Product[]> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken || '',
       },
       body: JSON.stringify({ query }),
     })
@@ -228,7 +228,7 @@ export async function getProductByHandle(productHandle: string): Promise<Product
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken || '',
       },
       body: JSON.stringify({ 
         query,
@@ -394,7 +394,7 @@ export async function createCheckout(): Promise<Cart> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken || '',
       },
       body: JSON.stringify({ query: mutation }),
     })
@@ -524,7 +524,7 @@ export async function addItemToCheckout(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken || '',
       },
       body: JSON.stringify({
         query: mutation,
@@ -660,7 +660,7 @@ export async function updateCheckoutLineItem(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken || '',
       },
       body: JSON.stringify({
         query: mutation,
@@ -788,7 +788,7 @@ export async function removeCheckoutLineItem(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken || '',
       },
       body: JSON.stringify({
         query: mutation,
@@ -906,7 +906,7 @@ export async function getCheckout(cartId: string): Promise<Cart> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken || '',
       },
       body: JSON.stringify({
         query,
