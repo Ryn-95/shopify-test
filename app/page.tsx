@@ -15,6 +15,7 @@ import CTASection from '@/components/CTASection'
 import ProductCard from '@/components/ProductCard'
 import ImageHero from '@/components/ImageHero'
 import BannerSection from '@/components/BannerSection'
+import ImageGallery from '@/components/ImageGallery'
 
 /**
  * Désactive le cache pour récupérer les produits en temps réel depuis Shopify
@@ -65,6 +66,16 @@ export default async function HomePage() {
     debugInfo = `Erreur: ${err.message}`
   }
 
+  // Récupérer toutes les images disponibles des produits
+  const allProductImages: string[] = []
+  products.forEach(product => {
+    product.images?.forEach(img => {
+      if (img.src && !allProductImages.includes(img.src)) {
+        allProductImages.push(img.src)
+      }
+    })
+  })
+
   // Récupérer les images des produits pour les sections - Utiliser toutes les images disponibles
   const featuredProductImage = products.length > 0 ? products[0]?.images?.[0]?.src : undefined
   const heroImage1 = products.length > 0 ? products[0]?.images?.[0]?.src : undefined
@@ -74,14 +85,20 @@ export default async function HomePage() {
   const heroImage3 = products.length > 2 
     ? products[2]?.images?.[0]?.src 
     : (products.length > 0 ? products[0]?.images?.[2]?.src : undefined)
+  
+  // Images pour les différentes sections
+  const statsBackgroundImage = allProductImages[0]
+  const featuresImages = allProductImages.slice(0, 4)
+  const whyChooseUsImages = allProductImages.slice(0, 4)
+  const testimonialsImages = allProductImages.slice(0, 3)
 
   return (
     <>
       {/* Hero Section - Minimaliste avec image */}
       <Hero featuredImage={featuredProductImage} />
 
-      {/* Stats Section */}
-      <StatsSection />
+      {/* Stats Section - Avec image de fond */}
+      <StatsSection backgroundImage={statsBackgroundImage} />
 
       {/* Image Hero Section 1 - Avec image produit */}
       <ImageHero
@@ -95,6 +112,14 @@ export default async function HomePage() {
       {/* Product Showcase */}
       {products.length > 0 && <ProductShowcase products={products} />}
 
+      {/* Image Gallery */}
+      {allProductImages.length > 0 && (
+        <ImageGallery 
+          images={allProductImages} 
+          title="Galerie Produits"
+        />
+      )}
+
       {/* Banner Section - Avec image produit */}
       <BannerSection
         title="Une expérience premium"
@@ -105,8 +130,8 @@ export default async function HomePage() {
         ctaLink="/products"
       />
 
-      {/* Why Choose Us */}
-      <WhyChooseUs />
+      {/* Why Choose Us - Avec images produits */}
+      <WhyChooseUs productImages={whyChooseUsImages} />
 
       {/* Video Section - Avec image thumbnail */}
       <VideoSection thumbnailImage={heroImage3 || heroImage2} />
@@ -114,8 +139,8 @@ export default async function HomePage() {
       {/* Featured Products */}
       {products.length > 0 && <FeaturedProducts products={products} />}
 
-      {/* Features Section */}
-      <Features />
+      {/* Features Section - Avec images produits */}
+      <Features productImages={featuresImages} />
 
       {/* Image Hero Section 2 - Avec image produit */}
       <ImageHero
@@ -127,8 +152,8 @@ export default async function HomePage() {
         ctaLink="/products"
       />
 
-      {/* Testimonials */}
-      <Testimonials />
+      {/* Testimonials - Avec images produits */}
+      <Testimonials productImages={testimonialsImages} />
 
       {/* All Products Section */}
       {products.length > 0 ? (
