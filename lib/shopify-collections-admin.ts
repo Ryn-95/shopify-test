@@ -48,7 +48,7 @@ export async function getAllCollectionsWithCount() {
 export async function enrichCollectionsWithCounts(collections: Array<{ id: string; handle: string; [key: string]: any }>) {
   try {
     const adminCollections = await getAllCollectionsWithCount()
-    const countMap = new Map(adminCollections.map(c => [c.handle, c.productsCount]))
+    const countMap = new Map(adminCollections.map((c: any) => [c.handle, c.productsCount]))
 
     return collections.map(collection => ({
       ...collection,
