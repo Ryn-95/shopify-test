@@ -23,26 +23,75 @@ export default function CheckoutSuccessPage() {
 
     setIsOrderCreating(true)
     try {
-      console.log('Attempting to create Shopify order from Stripe session:', stripeSessionId)
+      console.log('🛍️ Création de la commande Shopify depuis Stripe session:', stripeSessionId)
 
-      if (!cart || cart.lineItems.length === 0) {
-        console.warn('Cart is empty, cannot create Shopify order.')
-        return
-      }
-
+      // Récupérer les détails de la session Stripe
       const sessionResponse = await fetch(`/api/stripe/get-session-details?sessionId=${stripeSessionId}`)
       if (!sessionResponse.ok) {
         const errorData = await sessionResponse.json()
-        throw new Error(errorData.error || 'Failed to fetch Stripe session details.')
+        throw new Error(errorData.error || 'Échec de la récupération des détails de la session Stripe.')
       }
+      
       const sessionDetails = await sessionResponse.json()
       const { line_items, customer_details, amount_total, currency } = sessionDetails.session
 
-      const formattedLineItems = line_items.data.map((item: any) => ({
-        variantId: item.price.product_data.metadata.variant_id,
-        quantity: item.quantity,
-        price: (item.amount_total / 100).toFixed(2),
-      }))
+      // Vérifier que la session a des line items
+      if (!line_items || !line_items.data || line_items.data.length === 0) {
+        console.warn('⚠️ Session Stripe sans line items, utilisation du panier local')
+        
+        // Fallback : utiliser le panier local si disponible
+        if (cart && cart.lineItems.length > 0) {
+          const formattedLineItems = cart.lineItems.map((item: any) => ({
+            variantId: item.variantId,
+            quantity: item.quantity,
+            price: item.price,
+          }))
+
+          const createOrderResponse = await fetch('/api/shopify/create-order-from-session', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              lineItems: formattedLineItems,
+              customerEmail: customer_details?.email,
+              customerName: customer_details?.name,
+              totalAmount: cart.totalPrice || '0.00',
+              currency: currency || 'EUR',
+              stripeSessionId: stripeSessionId,
+            }),
+          })
+
+          if (createOrderResponse.ok) {
+            const orderData = await createOrderResponse.json()
+            console.log('✅ Commande Shopify créée avec succès:', orderData.order)
+            setShopifyOrderCreated(true)
+            clearCart()
+            return
+          }
+        }
+        throw new Error('Aucun article trouvé dans la session Stripe ou le panier')
+      }
+
+      // Utiliser les line items de Stripe
+      const formattedLineItems = line_items.data.map((item: any) => {
+        // Extraire le variant ID depuis les metadata
+        const variantId = item.price?.product_data?.metadata?.variant_id || 
+                         item.price?.metadata?.variant_id || 
+                         item.metadata?.variant_id ||
+                         // Fallback : essayer de trouver depuis le panier local
+                         (cart?.lineItems[0]?.variantId)
+
+        if (!variantId) {
+          console.warn('⚠️ Variant ID non trouvé pour:', item.price?.product_data?.name)
+        }
+
+        return {
+          variantId: variantId || '1', // Fallback si pas trouvé
+          quantity: item.quantity,
+          price: (item.amount_total / 100).toFixed(2),
+        }
+      })
 
       const createOrderResponse = await fetch('/api/shopify/create-order-from-session', {
         method: 'POST',
@@ -61,15 +110,21 @@ export default function CheckoutSuccessPage() {
 
       if (!createOrderResponse.ok) {
         const errorData = await createOrderResponse.json()
-        throw new Error(errorData.error || 'Failed to create Shopify order.')
+        console.error('❌ Erreur création commande:', errorData)
+        throw new Error(errorData.error || 'Échec de la création de la commande Shopify.')
       }
 
       const orderData = await createOrderResponse.json()
-      console.log('Shopify order created successfully:', orderData.order)
+      console.log('✅ Commande Shopify créée avec succès:', orderData.order)
+      console.log('   Numéro:', orderData.order.name)
+      console.log('   Total:', orderData.order.total_price, orderData.order.currency_code)
       setShopifyOrderCreated(true)
       clearCart()
-    } catch (error) {
-      console.error('Error creating Shopify order from Stripe session:', error)
+    } catch (error: any) {
+      console.error('❌ Erreur lors de la création de la commande Shopify:', error)
+      console.error('   Message:', error.message)
+      // Ne pas bloquer l'utilisateur même si la commande Shopify échoue
+      // Le paiement a été effectué, on peut toujours créer la commande manuellement
     } finally {
       setIsOrderCreating(false)
     }

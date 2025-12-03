@@ -47,13 +47,28 @@ export async function POST(request: NextRequest) {
     // Convertir les line items au format Shopify
     const formattedLineItems = lineItems.map((item: any) => {
       let variantId = item.variantId
+      
+      // Si c'est un ID GraphQL (gid://shopify/ProductVariant/123), extraire le nombre
       if (typeof variantId === 'string' && variantId.includes('/')) {
         const match = variantId.match(/\/(\d+)$/)
         variantId = match ? match[1] : variantId
       }
       
+      // S'assurer que c'est un nombre valide
+      const numericVariantId = parseInt(variantId)
+      if (isNaN(numericVariantId)) {
+        console.warn('⚠️ Variant ID invalide:', variantId, 'pour item:', item)
+        // Essayer de récupérer le premier variant du produit si disponible
+        // Pour l'instant, on utilise 1 comme fallback (sera géré par Shopify)
+        return {
+          variant_id: 1, // Fallback - Shopify gérera l'erreur si nécessaire
+          quantity: item.quantity,
+          price: item.price || undefined,
+        }
+      }
+      
       return {
-        variant_id: parseInt(variantId),
+        variant_id: numericVariantId,
         quantity: item.quantity,
         price: item.price || undefined,
       }
