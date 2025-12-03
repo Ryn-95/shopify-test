@@ -16,18 +16,19 @@ export default function Hero({ featuredImage }: HeroProps) {
   }, [])
 
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-tech-white">
-      {/* Background Image - Style Apple minimaliste */}
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-tech-white">
+      {/* Background Image - Style Apple avec grande image */}
       {featuredImage && (
-        <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0">
           <Image
             src={featuredImage}
             alt="Hero"
             fill
-            className="object-cover"
+            className="object-cover opacity-10"
             priority
             sizes="100vw"
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-tech-white/60 via-tech-white/40 to-tech-white" />
         </div>
       )}
       

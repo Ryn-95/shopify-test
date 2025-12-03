@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 }
 
 /**
- * Page d'accueil minimaliste style Apple
+ * Page d'accueil minimaliste style Apple avec images
  */
 export default async function HomePage() {
   let products: Product[] = []
@@ -45,12 +45,7 @@ export default async function HomePage() {
     const storeDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN
     const storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN
     
-    console.log('🔍 Debug - Variables d\'environnement:')
-    console.log('  - NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN:', storeDomain ? '✅ Définie' : '❌ Manquante')
-    console.log('  - NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN:', storefrontAccessToken ? '✅ Définie' : '❌ Manquante')
-    
     if (storeDomain && storefrontAccessToken) {
-      console.log('🛍️ Tentative de récupération des produits...')
       products = await getAllProducts()
       console.log(`✅ ${products.length} produit(s) récupéré(s) depuis Shopify`)
       
@@ -70,10 +65,11 @@ export default async function HomePage() {
     debugInfo = `Erreur: ${err.message}`
   }
 
-  // Récupérer les images des produits pour les sections
+  // Récupérer les images des produits pour les sections - Utiliser toutes les images disponibles
   const featuredProductImage = products.length > 0 ? products[0]?.images?.[0]?.src : undefined
-  const heroImage1 = products.length > 1 ? products[1]?.images?.[0]?.src : undefined
-  const heroImage2 = products.length > 2 ? products[2]?.images?.[0]?.src : undefined
+  const heroImage1 = products.length > 0 ? products[0]?.images?.[0]?.src : undefined
+  const heroImage2 = products.length > 1 ? products[1]?.images?.[0]?.src : products[0]?.images?.[1]?.src : undefined
+  const heroImage3 = products.length > 2 ? products[2]?.images?.[0]?.src : products[0]?.images?.[2]?.src : undefined
 
   return (
     <>
@@ -109,7 +105,7 @@ export default async function HomePage() {
       <WhyChooseUs />
 
       {/* Video Section - Avec image thumbnail */}
-      <VideoSection thumbnailImage={heroImage2} />
+      <VideoSection thumbnailImage={heroImage3 || heroImage2} />
 
       {/* Featured Products */}
       {products.length > 0 && <FeaturedProducts products={products} />}

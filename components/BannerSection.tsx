@@ -30,7 +30,7 @@ export default function BannerSection({
     <section className={`py-16 lg:py-20 ${bgClasses[bgColor]} border-t border-primary-100 relative overflow-hidden`}>
       {/* Background Image */}
       {imageUrl && (
-        <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 opacity-[0.03]">
           <Image
             src={imageUrl}
             alt={title}

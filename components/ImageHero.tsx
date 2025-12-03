@@ -45,17 +45,17 @@ export default function ImageHero({
         </div>
 
         {/* Image */}
-        <div className={`${reverse ? 'lg:col-start-1 lg:row-start-1' : ''} relative aspect-[4/3] rounded-lg overflow-hidden`}>
+        <div className={`${reverse ? 'lg:col-start-1 lg:row-start-1' : ''} relative aspect-[4/3] rounded-lg overflow-hidden bg-tech-light-gray`}>
           {imageUrl ? (
             <Image
               src={imageUrl}
               alt={title}
               fill
-              className="object-cover"
+              className="object-cover hover:opacity-90 transition-opacity duration-300"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           ) : (
-            <div className="w-full h-full bg-tech-light-gray flex items-center justify-center">
+            <div className="w-full h-full flex items-center justify-center">
               <svg className="w-16 h-16 text-primary-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008H12.75v-.008z" />
               </svg>
