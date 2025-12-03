@@ -49,11 +49,23 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   // Charger les produits une fois pour toute l'application
+  // Si les variables d'environnement ne sont pas définies (pendant le build), on retourne un tableau vide
   let products: any[] = []
   try {
-    products = await getAllProducts()
-  } catch (error) {
-    console.error('Erreur lors du chargement des produits:', error)
+    // Vérifier si les variables d'environnement sont disponibles
+    const storeDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN
+    const storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN
+    
+    if (storeDomain && storefrontAccessToken) {
+      products = await getAllProducts()
+    }
+    // Sinon, on laisse products = [] (silencieux pendant le build)
+  } catch (error: any) {
+    // Ne logger l'erreur que si ce n'est pas une erreur de configuration manquante
+    if (!error.message?.includes('variables d\'environnement')) {
+      console.error('Erreur lors du chargement des produits:', error)
+    }
+    // Pendant le build, on ignore silencieusement les erreurs de configuration
   }
 
   return (

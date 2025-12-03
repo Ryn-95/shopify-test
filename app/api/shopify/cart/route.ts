@@ -5,6 +5,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCheckout } from '@/lib/shopify'
 
+// Marquer cette route comme dynamique car elle utilise request.url
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
