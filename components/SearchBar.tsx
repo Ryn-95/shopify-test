@@ -89,21 +89,21 @@ export default function SearchBar({ products, onSearch }: SearchBarProps) {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => query.trim().length > 0 && results.length > 0 && setIsOpen(true)}
           onKeyDown={handleKeyDown}
-          placeholder="Rechercher un produit..."
-          className="w-full px-4 py-3 pl-12 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200"
+          placeholder="Rechercher..."
+          className="w-full px-4 py-2.5 pl-11 bg-tech-light-gray/50 backdrop-blur-sm border border-primary-200/50 rounded-2xl focus:ring-2 focus:ring-tech-accent focus:border-tech-accent transition-all duration-300 text-sm font-medium text-tech-black placeholder:text-primary-400"
         />
         <svg
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+          className="absolute left-3.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-400"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          strokeWidth={1.5}
         >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
+            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+          />
         </svg>
         <button
           type="submit"
@@ -114,19 +114,19 @@ export default function SearchBar({ products, onSearch }: SearchBarProps) {
 
       {/* Résultats de recherche */}
       {isOpen && results.length > 0 && (
-        <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-xl max-h-96 overflow-y-auto">
+        <div className="absolute z-50 w-full mt-2 glass border border-primary-100/50 rounded-2xl shadow-large max-h-96 overflow-y-auto animate-scale-in">
           {results.map((product, index) => {
             const image = product.images[0]
             return (
               <button
                 key={product.id}
                 onClick={() => handleSelect(product)}
-                className={`w-full flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors duration-200 ${
-                  index === selectedIndex ? 'bg-gray-50' : ''
+                className={`w-full flex items-center gap-4 p-4 hover:bg-primary-50/50 transition-colors duration-200 first:rounded-t-2xl last:rounded-b-2xl ${
+                  index === selectedIndex ? 'bg-primary-50/50' : ''
                 }`}
               >
                 {image && (
-                  <div className="w-16 h-16 relative flex-shrink-0 bg-gray-100 rounded-md overflow-hidden">
+                  <div className="w-14 h-14 relative flex-shrink-0 bg-tech-light-gray rounded-xl overflow-hidden">
                     <img
                       src={image.src}
                       alt={image.alt || product.title}
@@ -135,9 +135,9 @@ export default function SearchBar({ products, onSearch }: SearchBarProps) {
                   </div>
                 )}
                 <div className="flex-grow text-left">
-                  <p className="font-semibold text-gray-900">{product.title}</p>
+                  <p className="font-semibold text-tech-black text-sm">{product.title}</p>
                   {product.variants[0] && (
-                    <p className="text-sm text-gray-600">
+                    <p className="text-xs text-primary-600 font-medium mt-0.5">
                       {parseFloat(product.variants[0].price).toFixed(2)} €
                     </p>
                   )}
@@ -149,11 +149,10 @@ export default function SearchBar({ products, onSearch }: SearchBarProps) {
       )}
 
       {query.trim().length > 0 && results.length === 0 && (
-        <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-xl p-4 text-center text-gray-600">
-          Aucun produit trouvé
+        <div className="absolute z-50 w-full mt-2 glass border border-primary-100/50 rounded-2xl shadow-large p-4 text-center text-primary-500 text-sm">
+          Aucun résultat
         </div>
       )}
     </div>
   )
 }
-

@@ -11,44 +11,59 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-      {/* Animated background */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyIi8+PC9nPjwvZz48L3N2Zz4=')] opacity-30"></div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-tech-black">
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 opacity-[0.02]">
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+            backgroundSize: '60px 60px'
+          }}
+        />
       </div>
 
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-tech-black via-tech-dark-gray to-tech-black" />
+
       {/* Content */}
-      <div className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center ${mounted ? 'animate-slide-up' : 'opacity-0'}`}>
-        <div className="inline-block mb-6">
-          <span className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-white/90 text-sm font-medium border border-white/20">
-            ✨ Nouvelle Collection Disponible
+      <div className={`relative z-10 max-w-7xl mx-auto px-6 lg:px-8 text-center ${mounted ? 'animate-fade-in' : 'opacity-0'}`}>
+        {/* Badge */}
+        <div className="inline-block mb-8 animate-slide-down">
+          <span className="px-5 py-2 bg-tech-white/5 backdrop-blur-xl rounded-full text-tech-light-gray text-sm font-medium border border-tech-white/10">
+            ✨ Nouvelle Collection Tech
           </span>
         </div>
         
-        <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
-          <span className="block bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent animate-gradient">
-            Découvrez l'Excellence
+        {/* Main headline */}
+        <h1 className="text-display-1 md:text-[80px] lg:text-[100px] font-display font-bold text-tech-white mb-8 leading-[1.05] tracking-tight">
+          <span className="block text-gradient-accent animate-fade-in">
+            Innovation
           </span>
-          <span className="block mt-2 text-white">à Chaque Clic</span>
+          <span className="block mt-2 text-tech-white animate-fade-in" style={{ animationDelay: '0.1s' }}>
+            à chaque clic
+          </span>
         </h1>
         
-        <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-          Explorez notre sélection soigneusement choisie de produits premium. 
-          Qualité, style et innovation réunis pour vous.
+        {/* Subheadline */}
+        <p className="text-body md:text-xl text-tech-medium-gray mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          Découvrez notre sélection de produits tech premium. 
+          Design minimaliste, performance maximale.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
           <Link
-            href="/#products"
-            className="group relative px-8 py-4 bg-white text-gray-900 font-semibold rounded-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+            href="/products"
+            className="group relative px-8 py-4 bg-tech-white text-tech-black font-semibold rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-glow"
           >
-            <span className="relative z-10">Explorer la Collection</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-gray-100 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span className="relative z-10">Explorer</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-tech-white to-tech-light-gray opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </Link>
           
           <Link
             href="/about"
-            className="px-8 py-4 bg-white/10 backdrop-blur-md text-white font-semibold rounded-lg border border-white/20 transition-all duration-300 hover:bg-white/20 hover:scale-105"
+            className="px-8 py-4 bg-tech-white/5 backdrop-blur-xl text-tech-white font-semibold rounded-2xl border border-tech-white/10 transition-all duration-300 hover:bg-tech-white/10 hover:scale-105"
           >
             En savoir plus
           </Link>
@@ -56,12 +71,11 @@ export default function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <svg className="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <svg className="w-6 h-6 text-tech-medium-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
         </svg>
       </div>
     </section>
   )
 }
-
