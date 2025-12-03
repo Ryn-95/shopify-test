@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
           const orderData: any = {
             order: {
               line_items: formattedLineItems,
-              total_price: (fullSession.amount_total / 100).toFixed(2),
+              total_price: fullSession.amount_total ? (fullSession.amount_total / 100).toFixed(2) : '0.00',
               currency: fullSession.currency?.toUpperCase() || 'EUR',
               financial_status: 'paid',
               fulfillment_status: null,
