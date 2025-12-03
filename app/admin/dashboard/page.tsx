@@ -8,8 +8,8 @@ export const dynamic = 'force-dynamic'
 export default async function AdminDashboardPage() {
   let analytics = null
   let ordersStats = null
-  let recentOrders = []
-  let collections = []
+  let recentOrders: any[] = []
+  let collections: any[] = []
   let error: string | null = null
 
   try {
