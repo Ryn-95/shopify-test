@@ -49,7 +49,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   // Charger les produits une fois pour toute l'application
-  let products = []
+  let products: any[] = []
   try {
     products = await getAllProducts()
   } catch (error) {
