@@ -33,51 +33,37 @@ export default function NewsletterSection() {
   }
 
   return (
-    <section className="py-32 bg-tech-black relative overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-[0.03]">
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)`,
-            backgroundSize: '48px 48px'
-          }}
-        />
-      </div>
+    <section className="py-16 lg:py-20 bg-tech-white border-t border-primary-100">
+      <div className="max-w-2xl mx-auto px-6 lg:px-8 text-center">
+        <h2 className="text-2xl md:text-3xl font-display font-light text-tech-black mb-3 tracking-tight">
+          Restez informé
+        </h2>
+        <p className="text-sm md:text-base text-primary-600 mb-8 leading-relaxed font-light max-w-xl mx-auto">
+          Recevez nos dernières nouveautés et offres spéciales.
+        </p>
 
-      <div className="relative max-w-4xl mx-auto px-6 lg:px-8 text-center">
-        <div className="animate-fade-in">
-          <h2 className="text-display-2 md:text-display-1 font-display font-bold text-tech-white mb-6 tracking-tight">
-            Restez informé
-          </h2>
-          <p className="text-body md:text-xl text-tech-medium-gray mb-12 leading-relaxed max-w-2xl mx-auto">
-            Recevez en exclusivité nos dernières nouveautés, offres spéciales et actualités tech directement dans votre boîte mail.
-          </p>
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Votre adresse email"
+            required
+            className="flex-1 px-4 py-2.5 bg-tech-white border border-primary-200 rounded-lg text-sm text-tech-black placeholder:text-primary-400 focus:ring-1 focus:ring-tech-black focus:border-tech-black transition-all outline-none"
+          />
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="px-6 py-2.5 bg-tech-black text-tech-white text-sm font-medium rounded-lg hover:bg-primary-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? '...' : 'S\'abonner'}
+          </button>
+        </form>
 
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Votre adresse email"
-              required
-              className="flex-1 px-6 py-4 bg-tech-white/5 backdrop-blur-xl border border-tech-white/10 rounded-2xl text-tech-white placeholder:text-tech-medium-gray focus:ring-2 focus:ring-tech-accent focus:border-tech-accent transition-all duration-300 text-body"
-            />
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="px-8 py-4 bg-tech-white text-tech-black font-semibold rounded-2xl hover:bg-tech-light-gray transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-medium hover:shadow-large hover:scale-105 disabled:hover:scale-100"
-            >
-              {isSubmitting ? 'Inscription...' : 'S\'abonner'}
-            </button>
-          </form>
-
-          <p className="text-caption text-tech-medium-gray mt-6">
-            En vous abonnant, vous acceptez notre politique de confidentialité.
-          </p>
-        </div>
+        <p className="text-xs text-primary-500 mt-4 font-light">
+          En vous abonnant, vous acceptez notre politique de confidentialité.
+        </p>
       </div>
     </section>
   )
 }
-
