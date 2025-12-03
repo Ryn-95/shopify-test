@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { useMemo } from 'react'
 
 interface ImageHeroProps {
   title: string
@@ -19,8 +20,6 @@ const defaultImages = [
   'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80',
 ]
 
-let imageIndex = 0
-
 export default function ImageHero({ 
   title, 
   subtitle, 
@@ -29,8 +28,13 @@ export default function ImageHero({
   ctaLink = '/products',
   reverse = false 
 }: ImageHeroProps) {
-  // Utiliser l'image fournie ou une image Unsplash par défaut
-  const image = imageUrl || defaultImages[imageIndex++ % defaultImages.length]
+  // Utiliser l'image fournie ou une image Unsplash par défaut basée sur le titre
+  const image = useMemo(() => {
+    if (imageUrl) return imageUrl
+    // Utiliser un hash simple du titre pour sélectionner une image de manière déterministe
+    const hash = title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+    return defaultImages[hash % defaultImages.length]
+  }, [imageUrl, title])
 
   return (
     <section className={`py-16 lg:py-20 bg-tech-white ${reverse ? 'lg:flex-row-reverse' : ''}`}>

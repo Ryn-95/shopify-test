@@ -31,8 +31,8 @@ export async function POST(request: NextRequest) {
 
     // Construire l'URL de base
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
-                    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
-                    'http://localhost:3000'
+                    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
+                    'http://localhost:4000')
 
     console.log('💳 Création de la session Checkout avec Stripe...')
     

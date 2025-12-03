@@ -2,8 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    // Configuration pour les images Shopify
-    domains: ['cdn.shopify.com'],
+    // Configuration pour les images Shopify et Unsplash
+    domains: ['cdn.shopify.com', 'images.unsplash.com'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -12,6 +12,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: '**.shopify.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
       },
     ],
   },
@@ -29,4 +33,3 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
-
