@@ -11,24 +11,37 @@ import type { Product, Cart } from './types'
 const storeDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN
 const storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN
 
-// Vérification que les variables d'environnement sont définies
-if (!storeDomain || !storefrontAccessToken) {
-  throw new Error(
-    'Les variables d\'environnement NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN et NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN doivent être définies'
-  )
-}
+// Initialisation du client Shopify (seulement si les variables sont définies)
+// Ne pas lancer d'erreur à l'import pour permettre le build sur Vercel
+export const client = storeDomain && storefrontAccessToken
+  ? Client.buildClient({
+      domain: storeDomain,
+      storefrontAccessToken: storefrontAccessToken,
+    })
+  : null
 
-// Initialisation du client Shopify
-export const client = Client.buildClient({
-  domain: storeDomain,
-  storefrontAccessToken: storefrontAccessToken,
-})
+// Fonction helper pour vérifier la configuration
+function checkConfig() {
+  if (!storeDomain || !storefrontAccessToken) {
+    throw new Error(
+      'Les variables d\'environnement NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN et NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN doivent être définies'
+    )
+  }
+  return { storeDomain, storefrontAccessToken }
+}
 
 /**
  * Récupère tous les produits disponibles dans la boutique
  * @returns Promise<Product[]> Liste des produits
  */
 export async function getAllProducts(): Promise<Product[]> {
+  // Vérifier la configuration
+  if (!storeDomain || !storefrontAccessToken) {
+    throw new Error(
+      'Les variables d\'environnement NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN et NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN doivent être définies'
+    )
+  }
+
   try {
     console.log('🛍️ Récupération des produits depuis Shopify...')
     
@@ -173,6 +186,13 @@ export async function getAllProducts(): Promise<Product[]> {
  * @returns Promise<Product> Le produit
  */
 export async function getProductByHandle(productHandle: string): Promise<Product> {
+  // Vérifier la configuration
+  if (!storeDomain || !storefrontAccessToken) {
+    throw new Error(
+      'Les variables d\'environnement NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN et NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN doivent être définies'
+    )
+  }
+
   try {
     console.log(`🛍️ Récupération du produit ${productHandle}...`)
     
@@ -337,6 +357,8 @@ export async function getProductById(productId: string): Promise<Product> {
  * @returns Promise<Cart> Le checkout créé
  */
 export async function createCheckout(): Promise<Cart> {
+  checkConfig()
+  
   try {
     console.log('🛒 Création d\'un nouveau checkout...')
     
@@ -467,6 +489,8 @@ export async function addItemToCheckout(
   variantId: string,
   quantity: number = 1
 ): Promise<Cart> {
+  checkConfig()
+  
   try {
     console.log(`🛒 Ajout de ${quantity} x variant ${variantId} au panier ${cartId}...`)
     
@@ -603,6 +627,8 @@ export async function updateCheckoutLineItem(
   lineItemId: string,
   quantity: number
 ): Promise<Cart> {
+  checkConfig()
+  
   try {
     console.log(`🛒 Mise à jour de la ligne ${lineItemId} avec quantité ${quantity}...`)
     
@@ -731,6 +757,8 @@ export async function removeCheckoutLineItem(
   cartId: string,
   lineItemId: string
 ): Promise<Cart> {
+  checkConfig()
+  
   try {
     console.log(`🛒 Suppression de la ligne ${lineItemId}...`)
     
@@ -855,6 +883,8 @@ export async function removeCheckoutLineItem(
  * @returns Promise<Cart> Le panier
  */
 export async function getCheckout(cartId: string): Promise<Cart> {
+  checkConfig()
+  
   try {
     console.log(`🛒 Récupération du panier ${cartId}...`)
     
