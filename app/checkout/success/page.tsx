@@ -46,8 +46,8 @@ export default function CheckoutSuccessPage() {
     }
 
     // Tracker la conversion (analytics)
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'purchase', {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'purchase', {
         transaction_id: sessionId || paymentIntent || orderId || checkoutId,
       })
     }
