@@ -171,7 +171,7 @@ export async function getAllCollections(): Promise<Collection[]> {
 
     // Enrichir avec les counts depuis Admin API si disponible (pour plus de précision)
     try {
-      return await enrichCollectionsWithCounts(collections)
+      return await enrichCollectionsWithCounts(collections) as Collection[]
     } catch (error) {
       // Si Admin API n'est pas disponible, retourner les collections avec counts Storefront
       return collections
