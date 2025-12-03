@@ -68,8 +68,12 @@ export default async function HomePage() {
   // Récupérer les images des produits pour les sections - Utiliser toutes les images disponibles
   const featuredProductImage = products.length > 0 ? products[0]?.images?.[0]?.src : undefined
   const heroImage1 = products.length > 0 ? products[0]?.images?.[0]?.src : undefined
-  const heroImage2 = products.length > 1 ? products[1]?.images?.[0]?.src : products[0]?.images?.[1]?.src : undefined
-  const heroImage3 = products.length > 2 ? products[2]?.images?.[0]?.src : products[0]?.images?.[2]?.src : undefined
+  const heroImage2 = products.length > 1 
+    ? products[1]?.images?.[0]?.src 
+    : (products.length > 0 ? products[0]?.images?.[1]?.src : undefined)
+  const heroImage3 = products.length > 2 
+    ? products[2]?.images?.[0]?.src 
+    : (products.length > 0 ? products[0]?.images?.[2]?.src : undefined)
 
   return (
     <>
