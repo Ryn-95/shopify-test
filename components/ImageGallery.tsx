@@ -3,12 +3,24 @@
 import Image from 'next/image'
 
 interface ImageGalleryProps {
-  images: string[]
+  images?: string[]
   title?: string
 }
 
+// Images Unsplash par défaut pour la galerie
+const defaultGalleryImages = [
+  'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80',
+  'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=800&q=80',
+  'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
+  'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+  'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80',
+  'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80',
+  'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
+]
+
 export default function ImageGallery({ images, title }: ImageGalleryProps) {
-  if (images.length === 0) return null
+  const galleryImages = images && images.length > 0 ? images : defaultGalleryImages
 
   return (
     <section className="py-16 lg:py-20 bg-tech-white border-t border-primary-100">
@@ -22,7 +34,7 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
         )}
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {images.slice(0, 8).map((image, index) => (
+          {galleryImages.slice(0, 8).map((image, index) => (
             <div
               key={index}
               className="relative aspect-square overflow-hidden rounded-lg bg-tech-light-gray group cursor-pointer"
@@ -42,4 +54,3 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
     </section>
   )
 }
-

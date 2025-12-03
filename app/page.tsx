@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 }
 
 /**
- * Page d'accueil minimaliste style Apple avec images
+ * Page d'accueil minimaliste style Apple avec images Unsplash
  */
 export default async function HomePage() {
   let products: Product[] = []
@@ -66,45 +66,18 @@ export default async function HomePage() {
     debugInfo = `Erreur: ${err.message}`
   }
 
-  // Récupérer toutes les images disponibles des produits
-  const allProductImages: string[] = []
-  products.forEach(product => {
-    product.images?.forEach(img => {
-      if (img.src && !allProductImages.includes(img.src)) {
-        allProductImages.push(img.src)
-      }
-    })
-  })
-
-  // Récupérer les images des produits pour les sections - Utiliser toutes les images disponibles
-  const featuredProductImage = products.length > 0 ? products[0]?.images?.[0]?.src : undefined
-  const heroImage1 = products.length > 0 ? products[0]?.images?.[0]?.src : undefined
-  const heroImage2 = products.length > 1 
-    ? products[1]?.images?.[0]?.src 
-    : (products.length > 0 ? products[0]?.images?.[1]?.src : undefined)
-  const heroImage3 = products.length > 2 
-    ? products[2]?.images?.[0]?.src 
-    : (products.length > 0 ? products[0]?.images?.[2]?.src : undefined)
-  
-  // Images pour les différentes sections
-  const statsBackgroundImage = allProductImages[0]
-  const featuresImages = allProductImages.slice(0, 4)
-  const whyChooseUsImages = allProductImages.slice(0, 4)
-  const testimonialsImages = allProductImages.slice(0, 3)
-
   return (
     <>
-      {/* Hero Section - Minimaliste avec image */}
-      <Hero featuredImage={featuredProductImage} />
+      {/* Hero Section - Avec image Unsplash */}
+      <Hero />
 
-      {/* Stats Section - Avec image de fond */}
-      <StatsSection backgroundImage={statsBackgroundImage} />
+      {/* Stats Section - Avec image Unsplash */}
+      <StatsSection />
 
-      {/* Image Hero Section 1 - Avec image produit */}
+      {/* Image Hero Section 1 - Avec image Unsplash */}
       <ImageHero
         title="L'excellence à portée de main"
         subtitle="Découvrez notre sélection de produits tech premium, soigneusement choisis pour leur qualité exceptionnelle."
-        imageUrl={heroImage1}
         ctaText="Explorer la collection"
         ctaLink="/products"
       />
@@ -112,48 +85,41 @@ export default async function HomePage() {
       {/* Product Showcase */}
       {products.length > 0 && <ProductShowcase products={products} />}
 
-      {/* Image Gallery */}
-      {allProductImages.length > 0 && (
-        <ImageGallery 
-          images={allProductImages} 
-          title="Galerie Produits"
-        />
-      )}
+      {/* Image Gallery - Images Unsplash */}
+      <ImageGallery title="Galerie Produits" />
 
-      {/* Banner Section - Avec image produit */}
+      {/* Banner Section - Avec image Unsplash */}
       <BannerSection
         title="Une expérience premium"
         description="Chaque produit est sélectionné avec soin pour vous offrir une expérience d'utilisation exceptionnelle."
-        imageUrl={heroImage2}
         bgColor="white"
         ctaText="Découvrir nos produits"
         ctaLink="/products"
       />
 
-      {/* Why Choose Us - Avec images produits */}
-      <WhyChooseUs productImages={whyChooseUsImages} />
+      {/* Why Choose Us - Avec images Unsplash */}
+      <WhyChooseUs />
 
-      {/* Video Section - Avec image thumbnail */}
-      <VideoSection thumbnailImage={heroImage3 || heroImage2} />
+      {/* Video Section - Avec image Unsplash */}
+      <VideoSection />
 
       {/* Featured Products */}
       {products.length > 0 && <FeaturedProducts products={products} />}
 
-      {/* Features Section - Avec images produits */}
-      <Features productImages={featuresImages} />
+      {/* Features Section - Avec images Unsplash */}
+      <Features />
 
-      {/* Image Hero Section 2 - Avec image produit */}
+      {/* Image Hero Section 2 - Avec image Unsplash */}
       <ImageHero
         title="Innovation et performance"
         subtitle="Nos produits allient technologie de pointe et design épuré pour une expérience utilisateur optimale."
-        imageUrl={heroImage1}
         reverse={true}
         ctaText="Voir les produits"
         ctaLink="/products"
       />
 
-      {/* Testimonials - Avec images produits */}
-      <Testimonials productImages={testimonialsImages} />
+      {/* Testimonials - Avec images Unsplash */}
+      <Testimonials />
 
       {/* All Products Section */}
       {products.length > 0 ? (

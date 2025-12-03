@@ -6,6 +6,13 @@ interface TestimonialsProps {
   productImages?: string[]
 }
 
+// Images Unsplash par défaut pour les témoignages
+const defaultTestimonialImages = [
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
+  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80',
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80',
+]
+
 const testimonials = [
   {
     name: 'Sophie Martin',
@@ -31,23 +38,21 @@ export default function Testimonials({ productImages = [] }: TestimonialsProps) 
   return (
     <section className="py-16 lg:py-20 bg-tech-white border-t border-primary-100 relative overflow-hidden">
       {/* Background Images */}
-      {productImages.length > 0 && (
-        <div className="absolute inset-0 opacity-[0.015]">
-          <div className="grid grid-cols-3 h-full">
-            {productImages.slice(0, 3).map((img, i) => (
-              <div key={i} className="relative">
-                <Image
-                  src={img}
-                  alt={`Testimonial background ${i + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="33vw"
-                />
-              </div>
-            ))}
-          </div>
+      <div className="absolute inset-0 opacity-[0.015]">
+        <div className="grid grid-cols-3 h-full">
+          {(productImages.length > 0 ? productImages : defaultTestimonialImages).slice(0, 3).map((img, i) => (
+            <div key={i} className="relative">
+              <Image
+                src={img}
+                alt={`Testimonial background ${i + 1}`}
+                fill
+                className="object-cover"
+                sizes="33vw"
+              />
+            </div>
+          ))}
         </div>
-      )}
+      </div>
       
       <div className="relative max-w-5xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-12">
@@ -58,20 +63,18 @@ export default function Testimonials({ productImages = [] }: TestimonialsProps) 
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => {
-            const hasImage = productImages[index]
+            const image = productImages[index] || defaultTestimonialImages[index]
             return (
               <div key={index} className="group relative">
-                {hasImage && (
-                  <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full overflow-hidden opacity-20 group-hover:opacity-30 transition-opacity">
-                    <Image
-                      src={hasImage}
-                      alt={testimonial.name}
-                      fill
-                      className="object-cover"
-                      sizes="80px"
-                    />
-                  </div>
-                )}
+                <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full overflow-hidden opacity-20 group-hover:opacity-30 transition-opacity">
+                  <Image
+                    src={image}
+                    alt={testimonial.name}
+                    fill
+                    className="object-cover"
+                    sizes="80px"
+                  />
+                </div>
                 <div className="text-4xl mb-4 opacity-60">
                   {testimonial.avatar}
                 </div>

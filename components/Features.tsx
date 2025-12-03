@@ -6,6 +6,14 @@ interface FeaturesProps {
   productImages?: string[]
 }
 
+// Images Unsplash par défaut pour les features
+const defaultFeatureImages = [
+  'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
+  'https://images.unsplash.com/photo-1556740758-90de374c12ad?w=800&q=80',
+  'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80',
+]
+
 const features = [
   {
     title: 'Qualité Premium',
@@ -41,24 +49,18 @@ export default function Features({ productImages = [] }: FeaturesProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => {
-            const hasImage = productImages[index]
+            const image = productImages[index] || defaultFeatureImages[index]
             return (
               <div key={feature.title} className="group">
-                {hasImage ? (
-                  <div className="relative aspect-square rounded-lg overflow-hidden mb-4 bg-tech-light-gray">
-                    <Image
-                      src={hasImage}
-                      alt={feature.title}
-                      fill
-                      className="object-cover group-hover:opacity-90 transition-opacity duration-300"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                    />
-                  </div>
-                ) : (
-                  <div className="text-4xl mb-4 opacity-60 group-hover:opacity-100 transition-opacity">
-                    {feature.icon}
-                  </div>
-                )}
+                <div className="relative aspect-square rounded-lg overflow-hidden mb-4 bg-tech-light-gray">
+                  <Image
+                    src={image}
+                    alt={feature.title}
+                    fill
+                    className="object-cover group-hover:opacity-90 transition-opacity duration-300"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  />
+                </div>
                 <h3 className="text-sm font-display font-light text-tech-black mb-2">
                   {feature.title}
                 </h3>

@@ -6,6 +6,14 @@ interface WhyChooseUsProps {
   productImages?: string[]
 }
 
+// Images Unsplash par défaut
+const defaultWhyChooseImages = [
+  'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&q=80',
+  'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80',
+  'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80',
+  'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&q=80',
+]
+
 const reasons = [
   {
     title: 'Design Minimaliste',
@@ -52,28 +60,22 @@ export default function WhyChooseUs({ productImages = [] }: WhyChooseUsProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {reasons.map((reason, index) => {
-            const hasImage = productImages[index]
+            const image = productImages[index] || defaultWhyChooseImages[index]
             return (
               <div
                 key={index}
                 className="group relative"
               >
-                {hasImage ? (
-                  <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-4 bg-tech-light-gray">
-                    <Image
-                      src={hasImage}
-                      alt={reason.title}
-                      fill
-                      className="object-cover group-hover:opacity-90 transition-opacity duration-300"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-tech-black/20 to-transparent" />
-                  </div>
-                ) : (
-                  <div className="text-5xl mb-4 opacity-60 group-hover:opacity-100 transition-opacity">
-                    {reason.icon}
-                  </div>
-                )}
+                <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-4 bg-tech-light-gray">
+                  <Image
+                    src={image}
+                    alt={reason.title}
+                    fill
+                    className="object-cover group-hover:opacity-90 transition-opacity duration-300"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-tech-black/20 to-transparent" />
+                </div>
                 <h3 className="text-lg font-display font-light text-tech-black mb-2">
                   {reason.title}
                 </h3>

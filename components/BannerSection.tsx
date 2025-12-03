@@ -12,6 +12,9 @@ interface BannerSectionProps {
   bgColor?: 'black' | 'white' | 'gray'
 }
 
+// Image Unsplash par défaut
+const defaultBannerImage = 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920&q=80'
+
 export default function BannerSection({ 
   title, 
   description, 
@@ -26,20 +29,20 @@ export default function BannerSection({
     gray: 'bg-tech-light-gray text-tech-black'
   }
 
+  const image = imageUrl || defaultBannerImage
+
   return (
     <section className={`py-16 lg:py-20 ${bgClasses[bgColor]} border-t border-primary-100 relative overflow-hidden`}>
       {/* Background Image */}
-      {imageUrl && (
-        <div className="absolute inset-0 opacity-[0.03]">
-          <Image
-            src={imageUrl}
-            alt={title}
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-        </div>
-      )}
+      <div className="absolute inset-0 opacity-[0.03]">
+        <Image
+          src={image}
+          alt={title}
+          fill
+          className="object-cover"
+          sizes="100vw"
+        />
+      </div>
       
       <div className="relative max-w-3xl mx-auto px-6 lg:px-8 text-center">
         <h2 className="text-2xl md:text-3xl font-display font-light mb-3 tracking-tight">

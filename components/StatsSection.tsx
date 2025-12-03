@@ -6,6 +6,9 @@ interface StatsSectionProps {
   backgroundImage?: string
 }
 
+// Image Unsplash par défaut pour les stats
+const defaultStatsImage = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1920&q=80'
+
 const stats = [
   {
     number: '10K+',
@@ -30,20 +33,20 @@ const stats = [
 ]
 
 export default function StatsSection({ backgroundImage }: StatsSectionProps) {
+  const image = backgroundImage || defaultStatsImage
+
   return (
     <section className="relative py-16 bg-tech-white border-t border-primary-100 overflow-hidden">
       {/* Background Image */}
-      {backgroundImage && (
-        <div className="absolute inset-0 opacity-[0.02]">
-          <Image
-            src={backgroundImage}
-            alt="Stats Background"
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-        </div>
-      )}
+      <div className="absolute inset-0 opacity-[0.02]">
+        <Image
+          src={image}
+          alt="Stats Background"
+          fill
+          className="object-cover"
+          sizes="100vw"
+        />
+      </div>
       
       <div className="relative max-w-5xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">

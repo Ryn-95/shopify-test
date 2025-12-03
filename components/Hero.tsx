@@ -15,22 +15,23 @@ export default function Hero({ featuredImage }: HeroProps) {
     setMounted(true)
   }, [])
 
+  // Image Unsplash pour le hero - Tech premium
+  const heroImage = featuredImage || 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1920&q=80'
+
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-tech-white">
       {/* Background Image - Style Apple avec grande image */}
-      {featuredImage && (
-        <div className="absolute inset-0">
-          <Image
-            src={featuredImage}
-            alt="Hero"
-            fill
-            className="object-cover opacity-10"
-            priority
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-tech-white/60 via-tech-white/40 to-tech-white" />
-        </div>
-      )}
+      <div className="absolute inset-0">
+        <Image
+          src={heroImage}
+          alt="Hero"
+          fill
+          className="object-cover opacity-10"
+          priority
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-tech-white/60 via-tech-white/40 to-tech-white" />
+      </div>
       
       {/* Content - Style Apple minimaliste */}
       <div className={`relative z-30 max-w-5xl mx-auto px-6 lg:px-8 text-center ${mounted ? 'animate-fade-in' : 'opacity-0'}`}>

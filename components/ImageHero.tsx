@@ -12,6 +12,15 @@ interface ImageHeroProps {
   reverse?: boolean
 }
 
+// Images Unsplash par défaut pour différentes sections
+const defaultImages = [
+  'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=1200&q=80',
+  'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&q=80',
+  'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80',
+]
+
+let imageIndex = 0
+
 export default function ImageHero({ 
   title, 
   subtitle, 
@@ -20,6 +29,9 @@ export default function ImageHero({
   ctaLink = '/products',
   reverse = false 
 }: ImageHeroProps) {
+  // Utiliser l'image fournie ou une image Unsplash par défaut
+  const image = imageUrl || defaultImages[imageIndex++ % defaultImages.length]
+
   return (
     <section className={`py-16 lg:py-20 bg-tech-white ${reverse ? 'lg:flex-row-reverse' : ''}`}>
       <div className={`max-w-5xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${reverse ? 'lg:grid-flow-dense' : ''}`}>
@@ -46,21 +58,13 @@ export default function ImageHero({
 
         {/* Image */}
         <div className={`${reverse ? 'lg:col-start-1 lg:row-start-1' : ''} relative aspect-[4/3] rounded-lg overflow-hidden bg-tech-light-gray`}>
-          {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={title}
-              fill
-              className="object-cover hover:opacity-90 transition-opacity duration-300"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <svg className="w-16 h-16 text-primary-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008H12.75v-.008z" />
-              </svg>
-            </div>
-          )}
+          <Image
+            src={image}
+            alt={title}
+            fill
+            className="object-cover hover:opacity-90 transition-opacity duration-300"
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
         </div>
       </div>
     </section>
