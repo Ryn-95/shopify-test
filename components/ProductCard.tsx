@@ -2,7 +2,7 @@
 
 /**
  * Composant ProductCard Premium
- * Design inspiré Apple/Tesla - Minimaliste et élégant
+ * Design inspiré Apple/Tesla - Minimaliste et élégant avec images optimisées
  */
 
 import Image from 'next/image'
@@ -30,9 +30,9 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   const isCompared = isInCompare(product.id)
 
   // Récupération de la première image disponible
-  const image = product.images[0]
+  const image = product.images?.[0]
   // Récupération de la première variante disponible
-  const firstVariant = product.variants[0]
+  const firstVariant = product.variants?.[0]
   const price = firstVariant?.price || '0.00'
 
   /**
@@ -60,11 +60,11 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   }
 
   return (
-    <div className="group relative bg-tech-white rounded-3xl overflow-hidden border border-primary-100 hover:border-primary-200 transition-all duration-500 hover:shadow-large">
+    <div className="group relative bg-tech-white rounded-3xl overflow-hidden border border-primary-100 hover:border-primary-200 transition-all duration-500 hover:shadow-large hover:-translate-y-2">
       <Link href={`/product/${product.handle || product.id}`} className="block">
-        {/* Image container */}
+        {/* Image container - Style Apple avec image grande */}
         <div className="aspect-square relative overflow-hidden bg-tech-light-gray">
-          {image ? (
+          {image?.src ? (
             <>
               <Image
                 src={image.src}
@@ -83,7 +83,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
             </>
           ) : (
             <div className="w-full h-full flex items-center justify-center text-primary-400">
-              <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
+              <svg className="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008H12.75v-.008z" />
               </svg>
             </div>
@@ -91,12 +91,12 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           
           {/* Badge disponibilité */}
           {product.availableForSale && (
-            <div className="absolute top-4 right-4 bg-tech-accent text-white text-[10px] font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm">
+            <div className="absolute top-4 right-4 bg-tech-accent text-white text-[10px] font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm shadow-medium">
               Disponible
             </div>
           )}
           
-          {/* Actions overlay */}
+          {/* Actions overlay - Apparaît au hover */}
           <div className="absolute top-4 left-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button
               onClick={(e) => {
