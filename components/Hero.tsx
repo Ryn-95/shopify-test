@@ -1,9 +1,14 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-export default function Hero() {
+interface HeroProps {
+  featuredImage?: string
+}
+
+export default function Hero({ featuredImage }: HeroProps) {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -12,6 +17,20 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-tech-white">
+      {/* Background Image - Style Apple minimaliste */}
+      {featuredImage && (
+        <div className="absolute inset-0 opacity-5">
+          <Image
+            src={featuredImage}
+            alt="Hero"
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+        </div>
+      )}
+      
       {/* Content - Style Apple minimaliste */}
       <div className={`relative z-30 max-w-5xl mx-auto px-6 lg:px-8 text-center ${mounted ? 'animate-fade-in' : 'opacity-0'}`}>
         {/* Main headline - Typographie Apple subtile */}

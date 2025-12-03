@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface BannerSectionProps {
   title: string
@@ -14,6 +15,7 @@ interface BannerSectionProps {
 export default function BannerSection({ 
   title, 
   description, 
+  imageUrl,
   ctaText = 'Découvrir',
   ctaLink = '/products',
   bgColor = 'white'
@@ -25,8 +27,21 @@ export default function BannerSection({
   }
 
   return (
-    <section className={`py-16 lg:py-20 ${bgClasses[bgColor]} border-t border-primary-100`}>
-      <div className="max-w-3xl mx-auto px-6 lg:px-8 text-center">
+    <section className={`py-16 lg:py-20 ${bgClasses[bgColor]} border-t border-primary-100 relative overflow-hidden`}>
+      {/* Background Image */}
+      {imageUrl && (
+        <div className="absolute inset-0 opacity-5">
+          <Image
+            src={imageUrl}
+            alt={title}
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+        </div>
+      )}
+      
+      <div className="relative max-w-3xl mx-auto px-6 lg:px-8 text-center">
         <h2 className="text-2xl md:text-3xl font-display font-light mb-3 tracking-tight">
           {title}
         </h2>

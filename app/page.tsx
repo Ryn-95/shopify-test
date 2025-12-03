@@ -55,18 +55,24 @@ export default async function HomePage() {
     error = err.message || 'Impossible de charger les produits. Veuillez réessayer plus tard.'
   }
 
+  // Récupérer les images des produits pour les sections
+  const featuredProductImage = products.length > 0 ? products[0]?.images?.[0]?.src : undefined
+  const heroImage1 = products.length > 1 ? products[1]?.images?.[0]?.src : undefined
+  const heroImage2 = products.length > 2 ? products[2]?.images?.[0]?.src : undefined
+
   return (
     <>
-      {/* Hero Section - Minimaliste */}
-      <Hero />
+      {/* Hero Section - Minimaliste avec image */}
+      <Hero featuredImage={featuredProductImage} />
 
       {/* Stats Section */}
       <StatsSection />
 
-      {/* Image Hero Section 1 */}
+      {/* Image Hero Section 1 - Avec image produit */}
       <ImageHero
         title="L'excellence à portée de main"
         subtitle="Découvrez notre sélection de produits tech premium, soigneusement choisis pour leur qualité exceptionnelle."
+        imageUrl={heroImage1}
         ctaText="Explorer la collection"
         ctaLink="/products"
       />
@@ -74,10 +80,11 @@ export default async function HomePage() {
       {/* Product Showcase */}
       {products.length > 0 && <ProductShowcase products={products} />}
 
-      {/* Banner Section */}
+      {/* Banner Section - Avec image produit */}
       <BannerSection
         title="Une expérience premium"
         description="Chaque produit est sélectionné avec soin pour vous offrir une expérience d'utilisation exceptionnelle."
+        imageUrl={heroImage2}
         bgColor="white"
         ctaText="Découvrir nos produits"
         ctaLink="/products"
@@ -95,10 +102,11 @@ export default async function HomePage() {
       {/* Features Section */}
       <Features />
 
-      {/* Image Hero Section 2 */}
+      {/* Image Hero Section 2 - Avec image produit */}
       <ImageHero
         title="Innovation et performance"
         subtitle="Nos produits allient technologie de pointe et design épuré pour une expérience utilisateur optimale."
+        imageUrl={heroImage1}
         reverse={true}
         ctaText="Voir les produits"
         ctaLink="/products"
