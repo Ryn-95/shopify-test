@@ -11,7 +11,7 @@ export const STRIPE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE
 // Créer l'instance Stripe seulement si la clé secrète est disponible
 export const stripe = STRIPE_SECRET_KEY
   ? new Stripe(STRIPE_SECRET_KEY, {
-      apiVersion: '2024-11-20.acacia',
+      apiVersion: '2025-11-17.clover',
       typescript: true,
     })
   : null
