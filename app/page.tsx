@@ -5,6 +5,12 @@ import Hero from '@/components/Hero'
 import FeaturedProducts from '@/components/FeaturedProducts'
 import Features from '@/components/Features'
 import Testimonials from '@/components/Testimonials'
+import StatsSection from '@/components/StatsSection'
+import VideoSection from '@/components/VideoSection'
+import WhyChooseUs from '@/components/WhyChooseUs'
+import ProductShowcase from '@/components/ProductShowcase'
+import NewsletterSection from '@/components/NewsletterSection'
+import CTASection from '@/components/CTASection'
 import ProductCard from '@/components/ProductCard'
 
 /**
@@ -25,7 +31,8 @@ export const metadata: Metadata = {
 }
 
 /**
- * Page d'accueil premium avec design inspiré Apple/Tesla
+ * Page d'accueil premium avec design inspiré Apple
+ * Structure avec multiples sections pour une expérience immersive
  */
 export default async function HomePage() {
   let products: Product[] = []
@@ -41,28 +48,40 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero Section - Grande bannière d'accueil */}
       <Hero />
 
-      {/* Featured Products */}
+      {/* Stats Section - Chiffres clés */}
+      <StatsSection />
+
+      {/* Product Showcase - Produits phares en grand format */}
+      {products.length > 0 && <ProductShowcase products={products} />}
+
+      {/* Why Choose Us - Pourquoi nous choisir */}
+      <WhyChooseUs />
+
+      {/* Video Section - Présentation vidéo */}
+      <VideoSection />
+
+      {/* Featured Products - Produits vedettes */}
       {products.length > 0 && <FeaturedProducts products={products} />}
 
-      {/* Features Section */}
+      {/* Features Section - Caractéristiques */}
       <Features />
 
-      {/* Testimonials */}
+      {/* Testimonials - Témoignages clients */}
       <Testimonials />
 
-      {/* All Products Section */}
+      {/* All Products Section - Collection complète */}
       {products.length > 0 && (
-        <section className="py-24 bg-tech-light-gray">
+        <section className="py-32 bg-tech-light-gray">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="text-center mb-20">
-              <h2 className="text-display-3 md:text-headline font-display font-bold text-tech-black mb-4 tracking-tight">
+            <div className="text-center mb-20 animate-fade-in">
+              <h2 className="text-display-2 md:text-display-1 font-display font-bold text-tech-black mb-6 tracking-tight">
                 Toute Notre Collection
               </h2>
-              <p className="text-body md:text-lg text-primary-600 max-w-2xl mx-auto">
-                Explorez tous nos produits soigneusement sélectionnés
+              <p className="text-body md:text-xl text-primary-600 max-w-3xl mx-auto leading-relaxed">
+                Explorez tous nos produits soigneusement sélectionnés pour répondre à tous vos besoins tech
               </p>
             </div>
 
@@ -87,7 +106,7 @@ export default async function HomePage() {
                       </svg>
                     </div>
                   </div>
-                  <p className="text-sm font-medium text-gray-900 leading-relaxed">{error}</p>
+                  <p className="text-body font-medium text-tech-black leading-relaxed">{error}</p>
                 </div>
               </div>
             )}
@@ -106,6 +125,12 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* Newsletter Section - Inscription newsletter */}
+      <NewsletterSection />
+
+      {/* CTA Section - Call to action final */}
+      <CTASection />
     </>
   )
 }
