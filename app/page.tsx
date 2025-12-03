@@ -39,20 +39,35 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   let products: Product[] = []
   let error: string | null = null
+  let debugInfo: string | null = null
 
   try {
     const storeDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN
     const storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN
     
+    console.log('🔍 Debug - Variables d\'environnement:')
+    console.log('  - NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN:', storeDomain ? '✅ Définie' : '❌ Manquante')
+    console.log('  - NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN:', storefrontAccessToken ? '✅ Définie' : '❌ Manquante')
+    
     if (storeDomain && storefrontAccessToken) {
+      console.log('🛍️ Tentative de récupération des produits...')
       products = await getAllProducts()
-      console.log(`✅ ${products.length} produits chargés depuis Shopify`)
+      console.log(`✅ ${products.length} produit(s) récupéré(s) depuis Shopify`)
+      
+      if (products.length > 0) {
+        console.log('📦 Premier produit:', products[0].title)
+        console.log('🖼️ Images du premier produit:', products[0].images?.length || 0)
+      } else {
+        debugInfo = 'Aucun produit trouvé dans votre boutique Shopify. Vérifiez que vous avez des produits publiés.'
+      }
     } else {
+      debugInfo = 'Variables d\'environnement Shopify non configurées. Vérifiez votre fichier .env.local'
       console.warn('⚠️ Variables d\'environnement Shopify non configurées')
     }
   } catch (err: any) {
     console.error('❌ Erreur lors du chargement des produits:', err)
     error = err.message || 'Impossible de charger les produits. Veuillez réessayer plus tard.'
+    debugInfo = `Erreur: ${err.message}`
   }
 
   // Récupérer les images des produits pour les sections
@@ -93,8 +108,8 @@ export default async function HomePage() {
       {/* Why Choose Us */}
       <WhyChooseUs />
 
-      {/* Video Section */}
-      <VideoSection />
+      {/* Video Section - Avec image thumbnail */}
+      <VideoSection thumbnailImage={heroImage2} />
 
       {/* Featured Products */}
       {products.length > 0 && <FeaturedProducts products={products} />}
@@ -130,7 +145,7 @@ export default async function HomePage() {
 
             {error && (
               <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-800 text-center">
-                {error}
+                <strong>Erreur:</strong> {error}
               </div>
             )}
 
@@ -148,12 +163,29 @@ export default async function HomePage() {
               <h3 className="text-xl font-display font-light text-tech-black mb-3">
                 Aucun produit disponible
               </h3>
-              <p className="text-sm text-primary-600 mb-6 font-light">
-                {error || 'Les produits seront bientôt disponibles. Revenez plus tard !'}
+              <p className="text-sm text-primary-600 mb-4 font-light">
+                {error || debugInfo || 'Les produits seront bientôt disponibles. Revenez plus tard !'}
               </p>
+              
+              {/* Instructions de debug */}
+              <div className="mt-6 p-4 bg-tech-light-gray rounded-lg text-left text-xs text-primary-600 space-y-2">
+                <p><strong>Pour afficher vos produits Shopify :</strong></p>
+                <ol className="list-decimal list-inside space-y-1 ml-2">
+                  <li>Vérifiez que votre fichier <code className="bg-white px-1 rounded">.env.local</code> contient :</li>
+                  <li className="ml-4">
+                    <code>NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN=votre-store.myshopify.com</code>
+                  </li>
+                  <li className="ml-4">
+                    <code>NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN=votre-token</code>
+                  </li>
+                  <li>Vérifiez que vous avez des produits publiés dans votre boutique Shopify</li>
+                  <li>Redémarrez le serveur après avoir modifié .env.local</li>
+                </ol>
+              </div>
+              
               <Link
                 href="/"
-                className="inline-flex items-center text-sm text-tech-black hover:text-primary-700 transition-colors font-medium"
+                className="inline-flex items-center text-sm text-tech-black hover:text-primary-700 transition-colors font-medium mt-6"
               >
                 Retour à l'accueil
               </Link>
