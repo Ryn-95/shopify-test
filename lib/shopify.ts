@@ -3,6 +3,7 @@
  * Utilise le SDK shopify-buy pour interagir avec l'API Storefront
  */
 
+// @ts-ignore - shopify-buy n'a pas de types TypeScript
 import Client from 'shopify-buy'
 import type { Product, Cart } from './types'
 
