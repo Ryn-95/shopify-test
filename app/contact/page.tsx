@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import type { Metadata } from 'next'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -26,15 +25,25 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-tech-white">
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center animate-slide-up">
-            <h1 className="text-5xl md:text-6xl font-extrabold mb-6">
+      <section className="relative py-32 bg-tech-black overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.02]">
+          <div 
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+              backgroundSize: '60px 60px'
+            }}
+          />
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center animate-fade-in">
+            <h1 className="text-display-2 md:text-display-1 font-display font-bold text-tech-white mb-6 tracking-tight">
               Contactez-nous
             </h1>
-            <p className="text-xl text-gray-300 leading-relaxed">
+            <p className="text-body md:text-lg text-tech-medium-gray leading-relaxed">
               Nous sommes là pour répondre à toutes vos questions
             </p>
           </div>
@@ -42,68 +51,68 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Form Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 bg-tech-light-gray">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Info */}
             <div>
-              <h2 className="text-3xl font-extrabold text-gray-900 mb-6">
+              <h2 className="text-headline font-display font-bold text-tech-black mb-6">
                 Informations de contact
               </h2>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                Notre équipe est disponible pour vous aider. N'hésitez pas à nous contacter 
-                pour toute question ou demande d'information.
+              <p className="text-body text-primary-600 mb-8 leading-relaxed">
+                Notre équipe est disponible pour vous aider. N&apos;hésitez pas à nous contacter 
+                pour toute question ou demande d&apos;information.
               </p>
 
               <div className="space-y-6">
                 <div className="flex items-start">
-                  <div className="w-12 h-12 bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <div className="w-14 h-14 bg-tech-black text-tech-white rounded-2xl flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                     </svg>
                   </div>
                   <div className="ml-4">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">Email</h3>
-                    <p className="text-gray-600">contact@jjfyne.com</p>
+                    <h3 className="text-title font-display font-semibold text-tech-black mb-1">Email</h3>
+                    <p className="text-body text-primary-600">contact@jjfyne.com</p>
                   </div>
                 </div>
 
                 <div className="flex items-start">
-                  <div className="w-12 h-12 bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  <div className="w-14 h-14 bg-tech-black text-tech-white rounded-2xl flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-1.516-.921-2.9-2.35-3.5l-1.293-.55a2.25 2.25 0 00-1.714 0l-1.293.55a2.25 2.25 0 00-2.35 3.5v1.372a2.25 2.25 0 01-2.25 2.25H6.75a2.25 2.25 0 01-2.25-2.25V6.75z" />
                     </svg>
                   </div>
                   <div className="ml-4">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">Téléphone</h3>
-                    <p className="text-gray-600">+33 1 23 45 67 89</p>
+                    <h3 className="text-title font-display font-semibold text-tech-black mb-1">Téléphone</h3>
+                    <p className="text-body text-primary-600">+33 1 23 45 67 89</p>
                   </div>
                 </div>
 
                 <div className="flex items-start">
-                  <div className="w-12 h-12 bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <div className="w-14 h-14 bg-tech-black text-tech-white rounded-2xl flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                     </svg>
                   </div>
                   <div className="ml-4">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">Adresse</h3>
-                    <p className="text-gray-600">123 Rue de la Mode<br />75001 Paris, France</p>
+                    <h3 className="text-title font-display font-semibold text-tech-black mb-1">Adresse</h3>
+                    <p className="text-body text-primary-600">123 Rue de la Mode<br />75001 Paris, France</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Contact Form */}
-            <div className="bg-gradient-to-br from-gray-50 to-white p-8 rounded-2xl shadow-lg">
-              <h2 className="text-3xl font-extrabold text-gray-900 mb-6">
+            <div className="bg-tech-white p-8 rounded-3xl shadow-medium border border-primary-100">
+              <h2 className="text-headline font-display font-bold text-tech-black mb-6">
                 Envoyez-nous un message
               </h2>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-semibold text-gray-900 mb-2">
+                  <label htmlFor="name" className="block text-caption font-semibold text-tech-black mb-2">
                     Nom complet
                   </label>
                   <input
@@ -112,13 +121,13 @@ export default function ContactPage() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 bg-tech-light-gray border border-primary-200 rounded-2xl focus:ring-2 focus:ring-tech-accent focus:border-tech-accent transition-all duration-300 text-body"
                     placeholder="Votre nom"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-semibold text-gray-900 mb-2">
+                  <label htmlFor="email" className="block text-caption font-semibold text-tech-black mb-2">
                     Email
                   </label>
                   <input
@@ -127,13 +136,13 @@ export default function ContactPage() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 bg-tech-light-gray border border-primary-200 rounded-2xl focus:ring-2 focus:ring-tech-accent focus:border-tech-accent transition-all duration-300 text-body"
                     placeholder="votre@email.com"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-semibold text-gray-900 mb-2">
+                  <label htmlFor="message" className="block text-caption font-semibold text-tech-black mb-2">
                     Message
                   </label>
                   <textarea
@@ -142,27 +151,27 @@ export default function ContactPage() {
                     rows={5}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200 resize-none"
+                    className="w-full px-4 py-3 bg-tech-light-gray border border-primary-200 rounded-2xl focus:ring-2 focus:ring-tech-accent focus:border-tech-accent transition-all duration-300 resize-none text-body"
                     placeholder="Votre message..."
                   />
                 </div>
 
                 {submitStatus === 'success' && (
-                  <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
+                  <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-2xl text-body">
                     Message envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.
                   </div>
                 )}
 
                 {submitStatus === 'error' && (
-                  <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
-                    Une erreur s'est produite. Veuillez réessayer.
+                  <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-2xl text-body">
+                    Une erreur s&apos;est produite. Veuillez réessayer.
                   </div>
                 )}
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-gray-900 to-gray-800 text-white py-4 px-6 rounded-lg font-semibold hover:from-gray-800 hover:to-gray-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-105 disabled:hover:scale-100"
+                  className="w-full bg-tech-black text-tech-white py-4 px-6 rounded-2xl font-semibold hover:bg-primary-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-medium hover:shadow-large hover:scale-105 disabled:hover:scale-100"
                 >
                   {isSubmitting ? 'Envoi en cours...' : 'Envoyer le message'}
                 </button>
@@ -174,4 +183,3 @@ export default function ContactPage() {
     </div>
   )
 }
-

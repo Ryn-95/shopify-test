@@ -21,15 +21,7 @@ export default function ProductRecommendations({
   const [recommendations, setRecommendations] = useState<Product[]>([])
 
   useEffect(() => {
-    // Filtrer les produits pour exclure le produit actuel
     const filtered = products.filter((p) => p.id !== currentProductId)
-
-    // Pour l'instant, on prend simplement des produits aléatoires
-    // Dans un vrai système, vous pourriez utiliser :
-    // - Des produits de la même collection
-    // - Des produits avec des tags similaires
-    // - Des produits avec un prix similaire
-    // - Des produits souvent achetés ensemble (analytics)
     const shuffled = [...filtered].sort(() => 0.5 - Math.random())
     setRecommendations(shuffled.slice(0, limit))
   }, [products, currentProductId, limit])
@@ -39,30 +31,38 @@ export default function ProductRecommendations({
   }
 
   return (
-    <section className="mt-16 border-t border-gray-200 pt-12">
-      <div className="flex items-center justify-between mb-8">
+    <section className="mt-24 border-t border-primary-100 pt-16">
+      <div className="flex items-center justify-between mb-12">
         <div>
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-2">
+          <h2 className="text-headline font-display font-bold text-tech-black mb-2 tracking-tight">
             Produits similaires
           </h2>
-          <p className="text-gray-600">
+          <p className="text-body text-primary-600">
             Vous pourriez aussi aimer ces produits
           </p>
         </div>
         <Link
           href="/products"
-          className="text-gray-900 hover:text-gray-700 font-medium"
+          className="text-tech-accent hover:text-tech-accent-hover font-semibold text-body transition-colors inline-flex items-center"
         >
-          Voir tout →
+          Voir tout
+          <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
         </Link>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {recommendations.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {recommendations.map((product, index) => (
+          <div
+            key={product.id}
+            className="animate-fade-in"
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
+            <ProductCard product={product} />
+          </div>
         ))}
       </div>
     </section>
   )
 }
-

@@ -44,7 +44,6 @@ export default function ProductFilters({ products, onFilter }: ProductFiltersPro
         sorted.sort((a, b) => b.title.localeCompare(a.title))
         break
       default:
-        // Ordre par défaut
         break
     }
 
@@ -68,18 +67,18 @@ export default function ProductFilters({ products, onFilter }: ProductFiltersPro
   }, [])
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 mb-8">
-      <h2 className="text-xl font-extrabold text-gray-900 mb-6">Filtres</h2>
+    <div className="bg-tech-white rounded-3xl shadow-soft border border-primary-100 p-6 sticky top-24">
+      <h2 className="text-title font-display font-bold text-tech-black mb-6">Filtres</h2>
 
       {/* Tri */}
-      <div className="mb-6">
-        <label className="block text-sm font-semibold text-gray-900 mb-3">
+      <div className="mb-8">
+        <label className="block text-caption font-semibold text-tech-black mb-3 uppercase tracking-wider">
           Trier par
         </label>
         <select
           value={sortBy}
           onChange={(e) => handleSort(e.target.value as SortOption)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+          className="w-full px-4 py-3 bg-tech-light-gray border border-primary-200 rounded-2xl text-body text-tech-black font-medium focus:ring-2 focus:ring-tech-accent focus:border-tech-accent transition-all duration-300 appearance-none cursor-pointer hover:bg-primary-50"
         >
           <option value="default">Par défaut</option>
           <option value="price-asc">Prix croissant</option>
@@ -89,26 +88,31 @@ export default function ProductFilters({ products, onFilter }: ProductFiltersPro
         </select>
       </div>
 
-      {/* Filtre par prix */}
+      {/* Filtre prix */}
       <div>
-        <label className="block text-sm font-semibold text-gray-900 mb-3">
-          Prix maximum : {selectedPrice.toFixed(2)} €
+        <label className="block text-caption font-semibold text-tech-black mb-3 uppercase tracking-wider">
+          Prix maximum
         </label>
-        <input
-          type="range"
-          min="0"
-          max={maxPrice}
-          step="10"
-          value={selectedPrice}
-          onChange={(e) => handlePriceChange(parseFloat(e.target.value))}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-gray-900"
-        />
-        <div className="flex justify-between text-xs text-gray-500 mt-1">
-          <span>0 €</span>
-          <span>{maxPrice.toFixed(2)} €</span>
+        <div className="space-y-4">
+          <input
+            type="range"
+            min="0"
+            max={maxPrice}
+            step="10"
+            value={selectedPrice}
+            onChange={(e) => handlePriceChange(Number(e.target.value))}
+            className="w-full h-2 bg-tech-light-gray rounded-lg appearance-none cursor-pointer accent-tech-accent"
+            style={{
+              background: `linear-gradient(to right, #0071e3 0%, #0071e3 ${(selectedPrice / maxPrice) * 100}%, #f5f5f7 ${(selectedPrice / maxPrice) * 100}%, #f5f5f7 100%)`
+            }}
+          />
+          <div className="flex items-center justify-between text-caption text-primary-600 font-medium">
+            <span>0 €</span>
+            <span className="text-tech-black font-bold text-body">{selectedPrice.toFixed(0)} €</span>
+            <span>{maxPrice.toFixed(0)} €</span>
+          </div>
         </div>
       </div>
     </div>
   )
 }
-

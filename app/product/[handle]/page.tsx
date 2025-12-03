@@ -41,8 +41,7 @@ export async function generateMetadata({
 }
 
 /**
- * Page produit détaillée
- * Affiche toutes les informations d'un produit avec sélection de variantes
+ * Page produit détaillée Premium
  */
 export default async function ProductPage({
   params,
@@ -89,138 +88,142 @@ export default async function ProductPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fade-in">
-        {/* Breadcrumbs */}
-        <Breadcrumbs items={[
-          { label: 'Accueil', href: '/' },
-          { label: 'Produits', href: '/products' },
-          { label: product.title, href: `/product/${product.handle}` }
-        ]} />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Images du produit */}
-          <div className="space-y-4">
-            {firstImage ? (
-              <div className="aspect-square relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl overflow-hidden shadow-xl">
-                <Image
-                  src={firstImage.src}
-                  alt={firstImage.alt || product.title}
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-              </div>
-            ) : (
-              <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-24 h-24 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+      <div className="min-h-screen bg-tech-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+          {/* Breadcrumbs */}
+          <Breadcrumbs items={[
+            { label: 'Accueil', href: '/' },
+            { label: 'Produits', href: '/products' },
+            { label: product.title, href: `/product/${product.handle}` }
+          ]} />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mt-12">
+            {/* Images du produit */}
+            <div className="space-y-4">
+              {firstImage ? (
+                <div className="aspect-square relative bg-tech-light-gray rounded-3xl overflow-hidden shadow-large group">
+                  <Image
+                    src={firstImage.src}
+                    alt={firstImage.alt || product.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                   />
-                </svg>
-              </div>
-            )}
-
-            {/* Galerie d'images supplémentaires (si disponibles) */}
-            {product.images.length > 1 && (
-              <div className="grid grid-cols-4 gap-4">
-                {product.images.slice(1, 5).map((image) => (
-                  <div
-                    key={image.id}
-                    className="aspect-square relative bg-gray-100 rounded-md overflow-hidden"
+                </div>
+              ) : (
+                <div className="aspect-square bg-tech-light-gray rounded-3xl flex items-center justify-center">
+                  <svg
+                    className="w-24 h-24 text-primary-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1}
                   >
-                    <Image
-                      src={image.src}
-                      alt={image.alt || product.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 25vw, 12.5vw"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008H12.75v-.008z" />
+                  </svg>
+                </div>
+              )}
 
-          {/* Informations du produit */}
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-5xl font-extrabold text-gray-900 mb-6 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                {product.title}
-              </h1>
-              {product.variants[0] && (
-                <div className="mb-6">
-                  <p className="text-4xl font-bold text-gray-900">
-                    {parseFloat(product.variants[0].price).toFixed(2)} €
-                    {product.variants[0].compareAtPrice && (
-                      <span className="ml-4 text-2xl text-gray-400 line-through">
-                        {parseFloat(product.variants[0].compareAtPrice).toFixed(2)} €
-                      </span>
-                    )}
-                  </p>
-                  {product.variants[0].compareAtPrice && (
-                    <p className="text-sm text-green-600 font-semibold mt-2">
-                      Économisez {((parseFloat(product.variants[0].compareAtPrice) - parseFloat(product.variants[0].price)) / parseFloat(product.variants[0].compareAtPrice) * 100).toFixed(0)}%
-                    </p>
-                  )}
+              {/* Galerie d'images supplémentaires */}
+              {product.images.length > 1 && (
+                <div className="grid grid-cols-4 gap-4">
+                  {product.images.slice(1, 5).map((image) => (
+                    <div
+                      key={image.id}
+                      className="aspect-square relative bg-tech-light-gray rounded-2xl overflow-hidden group cursor-pointer border-2 border-transparent hover:border-tech-accent transition-all duration-300"
+                    >
+                      <Image
+                        src={image.src}
+                        alt={image.alt || product.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-110"
+                        sizes="(max-width: 1024px) 25vw, 12.5vw"
+                      />
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
 
-            {/* Description */}
-            {product.description && (
-              <div className="prose max-w-none">
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                  Description
-                </h2>
-                <div
-                  className="text-gray-600"
-                  dangerouslySetInnerHTML={{
-                    __html: product.descriptionHtml || product.description,
-                  }}
-                />
-              </div>
-            )}
-
-            {/* Sélecteur de variantes et bouton Ajouter au panier */}
-            <ProductVariantSelector product={product} />
-
-            {/* Disponibilité */}
-            <div className="pt-6 border-t border-gray-200">
-              <div className="flex items-center space-x-3">
-                {product.availableForSale ? (
-                  <>
-                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-green-600 font-semibold text-lg">En stock</span>
-                  </>
-                ) : (
-                  <>
-                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                    <span className="text-red-600 font-semibold text-lg">Indisponible</span>
-                  </>
+            {/* Informations du produit */}
+            <div className="space-y-8">
+              <div>
+                <h1 className="text-display-3 md:text-headline font-display font-bold text-tech-black mb-6 tracking-tight">
+                  {product.title}
+                </h1>
+                {product.variants[0] && (
+                  <div className="mb-8">
+                    <p className="text-headline font-display font-bold text-tech-black">
+                      {parseFloat(product.variants[0].price).toFixed(2)} €
+                      {product.variants[0].compareAtPrice && (
+                        <span className="ml-4 text-title text-primary-500 line-through font-normal">
+                          {parseFloat(product.variants[0].compareAtPrice).toFixed(2)} €
+                        </span>
+                      )}
+                    </p>
+                    {product.variants[0].compareAtPrice && (
+                      <p className="text-sm text-tech-accent font-semibold mt-2">
+                        Économisez {((parseFloat(product.variants[0].compareAtPrice) - parseFloat(product.variants[0].price)) / parseFloat(product.variants[0].compareAtPrice) * 100).toFixed(0)}%
+                      </p>
+                    )}
+                  </div>
                 )}
+              </div>
+
+              {/* Description */}
+              {product.description && (
+                <div className="prose prose-sm max-w-none">
+                  <h2 className="text-title font-display font-semibold text-tech-black mb-4">
+                    Description
+                  </h2>
+                  <div
+                    className="text-body text-primary-600 leading-relaxed"
+                    dangerouslySetInnerHTML={{
+                      __html: product.descriptionHtml || product.description,
+                    }}
+                  />
+                </div>
+              )}
+
+              {/* Sélecteur de variantes et bouton Ajouter au panier */}
+              <div className="pt-8 border-t border-primary-100">
+                <ProductVariantSelector product={product} />
+              </div>
+
+              {/* Disponibilité */}
+              <div className="pt-6 border-t border-primary-100">
+                <div className="flex items-center space-x-3">
+                  {product.availableForSale ? (
+                    <>
+                      <div className="w-3 h-3 bg-tech-accent rounded-full animate-pulse"></div>
+                      <span className="text-tech-accent font-semibold text-body">En stock</span>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                      <span className="text-red-600 font-semibold text-body">Indisponible</span>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>
+
+          {/* Avis clients */}
+          <div className="mt-24">
+            <ProductReviews productId={product.id} productHandle={product.handle} />
+          </div>
+
+          {/* Produits similaires */}
+          <div className="mt-24">
+            <ProductRecommendations
+              currentProductId={product.id}
+              currentProductHandle={product.handle}
+            />
+          </div>
         </div>
-
-        {/* Avis clients */}
-        <ProductReviews productId={product.id} productHandle={product.handle} />
-
-        {/* Produits similaires */}
-        <ProductRecommendations
-          currentProductId={product.id}
-          currentProductHandle={product.handle}
-        />
       </div>
     </>
   )
 }
-

@@ -17,95 +17,123 @@ export default async function CollectionsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+    <div className="min-h-screen bg-tech-white">
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center animate-slide-up">
-            <h1 className="text-5xl md:text-6xl font-extrabold mb-6">
+      <section className="relative py-32 bg-tech-black overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.02]">
+          <div 
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+              backgroundSize: '60px 60px'
+            }}
+          />
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center animate-fade-in">
+            <h1 className="text-display-2 md:text-display-1 font-display font-bold text-tech-white mb-6 tracking-tight">
               Nos Collections
             </h1>
-            <p className="text-xl text-gray-300 leading-relaxed">
-              Explorez nos collections soigneusement organisées
+            <p className="text-body md:text-lg text-tech-medium-gray leading-relaxed">
+              Explorez nos collections tech premium soigneusement organisées
             </p>
           </div>
         </div>
       </section>
 
       {/* Collections Section */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 bg-tech-light-gray">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <Breadcrumbs items={[
             { label: 'Accueil', href: '/' },
             { label: 'Collections', href: '/collections' }
           ]} />
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md mb-8">
-              <p>{error}</p>
+            <div className="relative overflow-hidden bg-gradient-to-br from-red-50/50 to-orange-50/50 backdrop-blur-sm border border-red-200/50 rounded-2xl p-6 mb-8 max-w-2xl mx-auto shadow-lg shadow-red-100/20 animate-fade-in">
+              <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-50"></div>
+              <div className="relative flex items-start gap-4">
+                <div className="flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center shadow-lg shadow-red-500/30">
+                    <svg
+                      className="h-5 w-5 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <p className="text-body font-medium text-gray-900 leading-relaxed">{error}</p>
+              </div>
             </div>
           )}
 
           {collections.length === 0 && !error && (
-            <div className="text-center py-12">
-              <p className="text-gray-600 text-lg">Aucune collection disponible.</p>
+            <div className="text-center py-24">
+              <div className="w-24 h-24 bg-tech-light-gray rounded-3xl flex items-center justify-center mx-auto mb-6">
+                <svg className="w-12 h-12 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+              </div>
+              <p className="text-body text-primary-600 font-medium">Aucune collection disponible.</p>
             </div>
           )}
 
           {collections.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
               {collections.map((collection, index) => (
                 <Link
                   key={collection.id}
                   href={`/collections/${collection.handle}`}
-                  className="group bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-slide-up"
+                  className="group bg-tech-white rounded-3xl overflow-hidden border border-primary-100 hover:border-primary-200 hover:shadow-large transition-all duration-500 animate-fade-in"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   {/* Image */}
                   {collection.image ? (
-                    <div className="aspect-[4/3] relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+                    <div className="aspect-[4/3] relative overflow-hidden bg-tech-light-gray">
                       <Image
                         src={collection.image.src}
                         alt={collection.image.alt}
                         fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     </div>
                   ) : (
-                    <div className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                      <svg
-                        className="w-16 h-16 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                        />
+                    <div className="aspect-[4/3] bg-tech-light-gray flex items-center justify-center">
+                      <svg className="w-16 h-16 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                       </svg>
                     </div>
                   )}
 
                   {/* Content */}
                   <div className="p-6">
-                    <h2 className="text-2xl font-extrabold text-gray-900 mb-2 group-hover:text-gray-700 transition-colors">
+                    <h2 className="text-title font-display font-semibold text-tech-black mb-2 group-hover:text-tech-accent transition-colors">
                       {collection.title}
                     </h2>
                     {collection.description && (
-                      <p className="text-gray-600 mb-4 line-clamp-2">
+                      <p className="text-body text-primary-600 mb-4 line-clamp-2">
                         {collection.description}
                       </p>
                     )}
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-semibold text-gray-500">
-                        {collection.productsCount} produit{collection.productsCount > 1 ? 's' : ''}
+                      <span className="text-caption font-semibold text-primary-500">
+                        {collection.productsCount || 0} produit{collection.productsCount > 1 ? 's' : ''}
                       </span>
-                      <span className="text-gray-900 font-semibold group-hover:translate-x-1 transition-transform duration-200">
-                        Voir →
+                      <span className="text-tech-accent font-semibold group-hover:translate-x-1 transition-transform duration-300 flex items-center">
+                        Voir
+                        <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
                       </span>
                     </div>
                   </div>
@@ -118,4 +146,3 @@ export default async function CollectionsPage() {
     </div>
   )
 }
-

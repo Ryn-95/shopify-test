@@ -67,8 +67,28 @@ export default async function HomePage() {
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-800 px-6 py-4 rounded-2xl mb-8 max-w-2xl mx-auto">
-                <p className="text-sm font-medium">{error}</p>
+              <div className="relative overflow-hidden bg-gradient-to-br from-red-50/50 to-orange-50/50 backdrop-blur-sm border border-red-200/50 rounded-2xl p-6 mb-8 max-w-2xl mx-auto shadow-lg shadow-red-100/20 animate-fade-in">
+                <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-50"></div>
+                <div className="relative flex items-start gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center shadow-lg shadow-red-500/30">
+                      <svg
+                        className="h-5 w-5 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <p className="text-sm font-medium text-gray-900 leading-relaxed">{error}</p>
+                </div>
               </div>
             )}
 

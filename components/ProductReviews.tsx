@@ -58,7 +58,7 @@ export default function ProductReviews({ productId, productHandle }: ProductRevi
         rating: formData.rating,
         title: formData.title,
         comment: formData.comment,
-        verified: false, // Dans un vrai système, vérifier si le client a acheté le produit
+        verified: false,
       })
 
       showToast('Votre avis a été publié !', 'success')
@@ -85,11 +85,11 @@ export default function ProductReviews({ productId, productHandle }: ProductRevi
             disabled={readonly}
             className={`${
               readonly ? 'cursor-default' : 'cursor-pointer hover:scale-110'
-            } transition-transform`}
+            } transition-transform duration-200`}
           >
             <svg
-              className={`w-6 h-6 ${
-                star <= value ? 'text-yellow-400 fill-current' : 'text-gray-300'
+              className={`w-5 h-5 ${
+                star <= value ? 'text-yellow-500 fill-current' : 'text-primary-300'
               }`}
               fill="currentColor"
               viewBox="0 0 20 20"
@@ -103,18 +103,18 @@ export default function ProductReviews({ productId, productHandle }: ProductRevi
   }
 
   return (
-    <div className="mt-12 border-t border-gray-200 pt-8">
-      <div className="flex items-center justify-between mb-6">
+    <div className="mt-16 border-t border-primary-100 pt-12">
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h2 className="text-2xl font-extrabold text-gray-900 mb-2">Avis clients</h2>
+          <h2 className="text-headline font-display font-bold text-tech-black mb-4 tracking-tight">Avis clients</h2>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <StarRating value={Math.round(rating.average)} readonly />
-              <span className="text-lg font-semibold text-gray-900">
+              <span className="text-headline font-display font-bold text-tech-black">
                 {rating.average > 0 ? rating.average.toFixed(1) : '0.0'}
               </span>
             </div>
-            <span className="text-gray-600">
+            <span className="text-body text-primary-600">
               ({rating.count} {rating.count === 1 ? 'avis' : 'avis'})
             </span>
           </div>
@@ -122,7 +122,7 @@ export default function ProductReviews({ productId, productHandle }: ProductRevi
         {isAuthenticated && (
           <button
             onClick={() => setShowForm(!showForm)}
-            className="px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+            className="px-6 py-3 bg-tech-black text-tech-white font-semibold rounded-2xl hover:bg-primary-800 transition-all duration-300 shadow-soft hover:shadow-medium hover:scale-105"
           >
             {showForm ? 'Annuler' : 'Laisser un avis'}
           </button>
@@ -131,10 +131,10 @@ export default function ProductReviews({ productId, productHandle }: ProductRevi
 
       {/* Formulaire d'avis */}
       {showForm && (
-        <div className="mb-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="mb-8 p-8 bg-tech-light-gray rounded-3xl border border-primary-100">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-caption font-semibold text-tech-black mb-3">
                 Note *
               </label>
               <StarRating
@@ -143,7 +143,7 @@ export default function ProductReviews({ productId, productHandle }: ProductRevi
               />
             </div>
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="title" className="block text-caption font-semibold text-tech-black mb-2">
                 Titre (optionnel)
               </label>
               <input
@@ -151,12 +151,12 @@ export default function ProductReviews({ productId, productHandle }: ProductRevi
                 type="text"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                className="w-full px-4 py-3 bg-tech-white border border-primary-200 rounded-2xl focus:ring-2 focus:ring-tech-accent focus:border-tech-accent transition-all duration-300 text-body"
                 placeholder="Résumez votre avis"
               />
             </div>
             <div>
-              <label htmlFor="comment" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="comment" className="block text-caption font-semibold text-tech-black mb-2">
                 Commentaire *
               </label>
               <textarea
@@ -165,15 +165,15 @@ export default function ProductReviews({ productId, productHandle }: ProductRevi
                 value={formData.comment}
                 onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                className="w-full px-4 py-3 bg-tech-white border border-primary-200 rounded-2xl focus:ring-2 focus:ring-tech-accent focus:border-tech-accent transition-all duration-300 resize-none text-body"
                 placeholder="Partagez votre expérience..."
               />
             </div>
             <button
               type="submit"
-              className="px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+              className="px-6 py-3 bg-tech-black text-tech-white font-semibold rounded-2xl hover:bg-primary-800 transition-all duration-300 shadow-soft hover:shadow-medium hover:scale-105"
             >
-              Publier l'avis
+              Publier l&apos;avis
             </button>
           </form>
         </div>
@@ -181,27 +181,27 @@ export default function ProductReviews({ productId, productHandle }: ProductRevi
 
       {/* Liste des avis */}
       {reviews.length === 0 ? (
-        <div className="text-center py-12 text-gray-600">
-          <p>Aucun avis pour le moment. Soyez le premier à laisser un avis !</p>
+        <div className="text-center py-16 text-primary-600">
+          <p className="text-body font-medium">Aucun avis pour le moment. Soyez le premier à laisser un avis !</p>
         </div>
       ) : (
         <div className="space-y-6">
           {reviews.map((review) => (
-            <div key={review.id} className="border border-gray-200 rounded-lg p-6">
-              <div className="flex items-start justify-between mb-3">
-                <div>
+            <div key={review.id} className="border border-primary-100 rounded-2xl p-6 bg-tech-white hover:border-primary-200 transition-all duration-300">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex-grow">
                   <div className="flex items-center gap-3 mb-2">
-                    <h4 className="font-semibold text-gray-900">
+                    <h4 className="font-display font-semibold text-tech-black text-title">
                       {review.customerName}
                     </h4>
                     {review.verified && (
-                      <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                      <span className="text-caption bg-green-100 text-green-800 px-2.5 py-1 rounded-full font-semibold">
                         Achat vérifié
                       </span>
                     )}
                   </div>
                   {review.title && (
-                    <h5 className="font-medium text-gray-900 mb-1">{review.title}</h5>
+                    <h5 className="font-display font-medium text-tech-black mb-2 text-body">{review.title}</h5>
                   )}
                 </div>
                 <div className="flex items-center gap-1">
@@ -209,7 +209,7 @@ export default function ProductReviews({ productId, productHandle }: ProductRevi
                     <svg
                       key={star}
                       className={`w-4 h-4 ${
-                        star <= review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
+                        star <= review.rating ? 'text-yellow-500 fill-current' : 'text-primary-300'
                       }`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
@@ -219,8 +219,8 @@ export default function ProductReviews({ productId, productHandle }: ProductRevi
                   ))}
                 </div>
               </div>
-              <p className="text-gray-700 mb-2">{review.comment}</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-body text-primary-700 mb-3 leading-relaxed">{review.comment}</p>
+              <p className="text-caption text-primary-500">
                 {new Date(review.createdAt).toLocaleDateString('fr-FR', {
                   year: 'numeric',
                   month: 'long',
@@ -234,4 +234,3 @@ export default function ProductReviews({ productId, productHandle }: ProductRevi
     </div>
   )
 }
-

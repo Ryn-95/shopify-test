@@ -39,19 +39,19 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-tech-light-gray py-12 px-6 lg:px-8">
       <div className="max-w-md mx-auto">
         <Breadcrumbs items={[
           { label: 'Accueil', href: '/' },
           { label: isLogin ? 'Connexion' : 'Inscription', href: '/login' }
         ]} />
 
-        <div className="mt-8 bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
+        <div className="mt-8 bg-tech-white rounded-3xl shadow-large border border-primary-100 p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-extrabold text-gray-900 mb-2">
+            <h1 className="text-headline font-display font-bold text-tech-black mb-2">
               {isLogin ? 'Connexion' : 'Créer un compte'}
             </h1>
-            <p className="text-gray-600">
+            <p className="text-body text-primary-600">
               {isLogin
                 ? 'Connectez-vous à votre compte'
                 : 'Rejoignez-nous dès aujourd\'hui'}
@@ -59,16 +59,16 @@ export default function LoginPage() {
           </div>
 
           {/* Toggle Login/Register */}
-          <div className="flex mb-6 bg-gray-100 rounded-lg p-1">
+          <div className="flex mb-6 bg-tech-light-gray rounded-2xl p-1">
             <button
               onClick={() => {
                 setIsLogin(true)
                 setError('')
               }}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+              className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-semibold transition-all duration-300 ${
                 isLogin
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-tech-white text-tech-black shadow-soft'
+                  : 'text-primary-600 hover:text-tech-black'
               }`}
             >
               Connexion
@@ -78,10 +78,10 @@ export default function LoginPage() {
                 setIsLogin(false)
                 setError('')
               }}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+              className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-semibold transition-all duration-300 ${
                 !isLogin
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-tech-white text-tech-black shadow-soft'
+                  : 'text-primary-600 hover:text-tech-black'
               }`}
             >
               Inscription
@@ -89,16 +89,16 @@ export default function LoginPage() {
           </div>
 
           {error && (
-            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-800">{error}</p>
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl">
+              <p className="text-sm text-red-800 font-medium">{error}</p>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {!isLogin && (
               <>
                 <div>
-                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="firstName" className="block text-caption font-semibold text-tech-black mb-2">
                     Prénom
                   </label>
                   <input
@@ -106,12 +106,12 @@ export default function LoginPage() {
                     type="text"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-tech-light-gray border border-primary-200 rounded-2xl focus:ring-2 focus:ring-tech-accent focus:border-tech-accent transition-all duration-300 text-body"
                     placeholder="Votre prénom"
                   />
                 </div>
                 <div>
-                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="lastName" className="block text-caption font-semibold text-tech-black mb-2">
                     Nom
                   </label>
                   <input
@@ -119,7 +119,7 @@ export default function LoginPage() {
                     type="text"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-tech-light-gray border border-primary-200 rounded-2xl focus:ring-2 focus:ring-tech-accent focus:border-tech-accent transition-all duration-300 text-body"
                     placeholder="Votre nom"
                   />
                 </div>
@@ -127,7 +127,7 @@ export default function LoginPage() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="email" className="block text-caption font-semibold text-tech-black mb-2">
                 Email *
               </label>
               <input
@@ -136,14 +136,14 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 bg-tech-light-gray border border-primary-200 rounded-2xl focus:ring-2 focus:ring-tech-accent focus:border-tech-accent transition-all duration-300 text-body"
                 placeholder="votre@email.com"
               />
             </div>
 
             {isLogin && (
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="password" className="block text-caption font-semibold text-tech-black mb-2">
                   Mot de passe
                 </label>
                 <input
@@ -151,12 +151,12 @@ export default function LoginPage() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-tech-light-gray border border-primary-200 rounded-2xl focus:ring-2 focus:ring-tech-accent focus:border-tech-accent transition-all duration-300 text-body"
                   placeholder="••••••••"
                 />
                 <Link
                   href="/forgot-password"
-                  className="text-sm text-gray-600 hover:text-gray-900 mt-2 inline-block"
+                  className="text-caption text-primary-600 hover:text-tech-accent mt-2 inline-block transition-colors"
                 >
                   Mot de passe oublié ?
                 </Link>
@@ -166,21 +166,21 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 bg-gradient-to-r from-gray-900 to-gray-800 text-white font-semibold rounded-lg hover:from-gray-800 hover:to-gray-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              className="w-full py-4 bg-tech-black text-tech-white font-semibold rounded-2xl hover:bg-primary-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-medium hover:shadow-large hover:scale-105 disabled:hover:scale-100"
             >
               {isLoading ? 'Chargement...' : isLogin ? 'Se connecter' : 'Créer un compte'}
             </button>
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-body text-primary-600">
               {isLogin ? "Pas encore de compte ? " : "Déjà un compte ? "}
               <button
                 onClick={() => {
                   setIsLogin(!isLogin)
                   setError('')
                 }}
-                className="text-gray-900 font-semibold hover:underline"
+                className="text-tech-black font-semibold hover:text-tech-accent transition-colors"
               >
                 {isLogin ? 'Inscrivez-vous' : 'Connectez-vous'}
               </button>
@@ -191,4 +191,3 @@ export default function LoginPage() {
     </div>
   )
 }
-
