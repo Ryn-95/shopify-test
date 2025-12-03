@@ -24,8 +24,82 @@ export default function CheckoutSuccessPage() {
     setIsOrderCreating(true)
     try {
       console.log('🛍️ Création de la commande Shopify depuis Stripe session:', stripeSessionId)
+      console.log('📦 Panier local:', cart ? `${cart.lineItems.length} article(s)` : 'vide')
 
-      // Récupérer les détails de la session Stripe
+      // PRIORITÉ 1 : Utiliser le panier local (plus fiable que Stripe metadata)
+      if (cart && cart.lineItems.length > 0) {
+        console.log('✅ Utilisation du panier local pour créer la commande Shopify')
+        
+        const formattedLineItems = cart.lineItems.map((item: any) => {
+          console.log(`   - ${item.title} (${item.quantity}x): variantId=${item.variantId}, price=${item.price}`)
+          return {
+            variantId: item.variantId,
+            quantity: item.quantity,
+            price: item.price,
+          }
+        })
+
+        // Récupérer les détails client depuis Stripe
+        let customerEmail = ''
+        let customerName = ''
+        let totalAmount = cart.totalPrice || '0.00'
+        let currency = cart.currencyCode || 'EUR'
+
+        try {
+          const sessionResponse = await fetch(`/api/stripe/get-session-details?sessionId=${stripeSessionId}`)
+          if (sessionResponse.ok) {
+            const sessionDetails = await sessionResponse.json()
+            const { customer_details, amount_total, currency: sessionCurrency } = sessionDetails.session
+            customerEmail = customer_details?.email || ''
+            customerName = customer_details?.name || ''
+            if (amount_total) {
+              totalAmount = (amount_total / 100).toFixed(2)
+            }
+            if (sessionCurrency) {
+              currency = sessionCurrency.toUpperCase()
+            }
+          }
+        } catch (e) {
+          console.warn('⚠️ Impossible de récupérer les détails Stripe, utilisation du panier:', e)
+        }
+
+        console.log(`📧 Email client: ${customerEmail || 'Non fourni'}`)
+        console.log(`💰 Total: ${totalAmount} ${currency}`)
+
+        const createOrderResponse = await fetch('/api/shopify/create-order-from-session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            lineItems: formattedLineItems,
+            customerEmail: customerEmail,
+            customerName: customerName,
+            totalAmount: totalAmount,
+            currency: currency,
+            stripeSessionId: stripeSessionId,
+          }),
+        })
+
+        if (!createOrderResponse.ok) {
+          const errorData = await createOrderResponse.json()
+          console.error('❌ Erreur création commande Shopify:', errorData)
+          throw new Error(errorData.error || 'Échec de la création de la commande Shopify.')
+        }
+
+        const orderData = await createOrderResponse.json()
+        console.log('✅ Commande Shopify créée avec succès!')
+        console.log('   Numéro:', orderData.order?.name)
+        console.log('   ID:', orderData.order?.id)
+        console.log('   Total:', orderData.order?.total_price, orderData.order?.currency_code)
+        setShopifyOrderCreated(true)
+        clearCart()
+        return
+      }
+
+      // FALLBACK : Utiliser Stripe si pas de panier local
+      console.warn('⚠️ Panier local vide, tentative avec Stripe metadata...')
+      
       const sessionResponse = await fetch(`/api/stripe/get-session-details?sessionId=${stripeSessionId}`)
       if (!sessionResponse.ok) {
         const errorData = await sessionResponse.json()
@@ -33,57 +107,22 @@ export default function CheckoutSuccessPage() {
       }
       
       const sessionDetails = await sessionResponse.json()
-      const { line_items, customer_details, amount_total, currency } = sessionDetails.session
+      const { line_items, customer_details, amount_total, currency: sessionCurrency } = sessionDetails.session
 
-      // Vérifier que la session a des line items
       if (!line_items || !line_items.data || line_items.data.length === 0) {
-        console.warn('⚠️ Session Stripe sans line items, utilisation du panier local')
-        
-        // Fallback : utiliser le panier local si disponible
-        if (cart && cart.lineItems.length > 0) {
-          const formattedLineItems = cart.lineItems.map((item: any) => ({
-            variantId: item.variantId,
-            quantity: item.quantity,
-            price: item.price,
-          }))
-
-          const createOrderResponse = await fetch('/api/shopify/create-order-from-session', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              lineItems: formattedLineItems,
-              customerEmail: customer_details?.email,
-              customerName: customer_details?.name,
-              totalAmount: cart.totalPrice || '0.00',
-              currency: currency || 'EUR',
-              stripeSessionId: stripeSessionId,
-            }),
-          })
-
-          if (createOrderResponse.ok) {
-            const orderData = await createOrderResponse.json()
-            console.log('✅ Commande Shopify créée avec succès:', orderData.order)
-            setShopifyOrderCreated(true)
-            clearCart()
-            return
-          }
-        }
-        throw new Error('Aucun article trouvé dans la session Stripe ou le panier')
+        throw new Error('Aucun article trouvé dans la session Stripe et le panier local est vide')
       }
 
       // Utiliser les line items de Stripe
-      const formattedLineItems = line_items.data.map((item: any) => {
+      const formattedLineItems = line_items.data.map((item: any, index: number) => {
         // Extraire le variant ID depuis les metadata
-        const variantId = item.price?.product_data?.metadata?.variant_id || 
-                         item.price?.metadata?.variant_id || 
-                         item.metadata?.variant_id ||
-                         // Fallback : essayer de trouver depuis le panier local
-                         (cart?.lineItems[0]?.variantId)
+        let variantId = item.price?.product_data?.metadata?.variant_id || 
+                       item.price?.metadata?.variant_id || 
+                       item.metadata?.variant_id
 
         if (!variantId) {
-          console.warn('⚠️ Variant ID non trouvé pour:', item.price?.product_data?.name)
+          console.warn(`⚠️ Variant ID non trouvé pour l'article ${index + 1}:`, item.price?.product_data?.name)
+          console.warn('   Metadata disponibles:', JSON.stringify(item.price?.product_data?.metadata || {}))
         }
 
         return {
@@ -103,7 +142,7 @@ export default function CheckoutSuccessPage() {
           customerEmail: customer_details?.email,
           customerName: customer_details?.name,
           totalAmount: (amount_total / 100).toFixed(2),
-          currency: currency,
+          currency: sessionCurrency || 'EUR',
           stripeSessionId: stripeSessionId,
         }),
       })
@@ -123,8 +162,7 @@ export default function CheckoutSuccessPage() {
     } catch (error: any) {
       console.error('❌ Erreur lors de la création de la commande Shopify:', error)
       console.error('   Message:', error.message)
-      // Ne pas bloquer l'utilisateur même si la commande Shopify échoue
-      // Le paiement a été effectué, on peut toujours créer la commande manuellement
+      console.error('   Stack:', error.stack)
     } finally {
       setIsOrderCreating(false)
     }

@@ -45,33 +45,47 @@ export async function POST(request: NextRequest) {
     }
 
     // Convertir les line items au format Shopify
-    const formattedLineItems = lineItems.map((item: any) => {
+    const formattedLineItems = lineItems.map((item: any, index: number) => {
       let variantId = item.variantId
       
+      console.log(`📦 Item ${index + 1}: variantId=${variantId}, quantity=${item.quantity}, price=${item.price}`)
+      
       // Si c'est un ID GraphQL (gid://shopify/ProductVariant/123), extraire le nombre
-      if (typeof variantId === 'string' && variantId.includes('/')) {
-        const match = variantId.match(/\/(\d+)$/)
-        variantId = match ? match[1] : variantId
+      if (typeof variantId === 'string') {
+        // Format GraphQL: gid://shopify/ProductVariant/123456789
+        if (variantId.includes('ProductVariant/')) {
+          const match = variantId.match(/ProductVariant\/(\d+)/)
+          if (match) {
+            variantId = match[1]
+            console.log(`   → Extrait depuis GraphQL: ${variantId}`)
+          }
+        }
+        // Format avec slash: /123456789 ou 123456789
+        else if (variantId.includes('/')) {
+          const match = variantId.match(/\/(\d+)$/)
+          if (match) {
+            variantId = match[1]
+            console.log(`   → Extrait depuis format slash: ${variantId}`)
+          }
+        }
       }
       
       // S'assurer que c'est un nombre valide
       const numericVariantId = parseInt(variantId)
-      if (isNaN(numericVariantId)) {
-        console.warn('⚠️ Variant ID invalide:', variantId, 'pour item:', item)
-        // Essayer de récupérer le premier variant du produit si disponible
-        // Pour l'instant, on utilise 1 comme fallback (sera géré par Shopify)
-        return {
-          variant_id: 1, // Fallback - Shopify gérera l'erreur si nécessaire
-          quantity: item.quantity,
-          price: item.price || undefined,
-        }
+      if (isNaN(numericVariantId) || numericVariantId <= 0) {
+        console.error(`❌ Variant ID invalide: "${variantId}" (type: ${typeof variantId}) pour item:`, item)
+        throw new Error(`Variant ID invalide pour "${item.title || 'produit'}": ${variantId}. Veuillez vérifier que le produit existe dans Shopify.`)
       }
       
-      return {
+      const formattedItem = {
         variant_id: numericVariantId,
-        quantity: item.quantity,
-        price: item.price || undefined,
+        quantity: item.quantity || 1,
+        price: item.price ? parseFloat(item.price).toFixed(2) : undefined,
       }
+      
+      console.log(`   ✅ Formaté: variant_id=${formattedItem.variant_id}, quantity=${formattedItem.quantity}, price=${formattedItem.price || 'non spécifié'}`)
+      
+      return formattedItem
     })
 
     // Préparer les données de la commande
@@ -102,6 +116,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Créer la commande dans Shopify
+    console.log('📤 Envoi de la requête à Shopify Admin API...')
+    console.log(`   URL: https://${adminStoreDomain}/admin/api/2024-01/orders.json`)
+    console.log(`   Line items:`, JSON.stringify(formattedLineItems, null, 2))
+    console.log(`   Order data:`, JSON.stringify(orderData, null, 2))
+    
     const response = await fetch(
       `https://${adminStoreDomain}/admin/api/2024-01/orders.json`,
       {
@@ -114,20 +133,46 @@ export async function POST(request: NextRequest) {
       }
     )
 
+    const responseText = await response.text()
+    console.log(`📥 Réponse Shopify (status ${response.status}):`, responseText.substring(0, 500))
+
     if (!response.ok) {
-      const errorText = await response.text()
-      console.error('❌ Erreur création commande Shopify:', errorText)
+      console.error('❌ Erreur création commande Shopify:')
+      console.error(`   Status: ${response.status}`)
+      console.error(`   Response: ${responseText}`)
+      
+      let errorDetails = responseText
+      try {
+        const errorJson = JSON.parse(responseText)
+        errorDetails = errorJson.errors || errorJson.error || responseText
+      } catch (e) {
+        // Garder le texte brut si ce n'est pas du JSON
+      }
+      
       return NextResponse.json(
-        { error: 'Erreur lors de la création de la commande Shopify', details: errorText },
+        { 
+          error: 'Erreur lors de la création de la commande Shopify', 
+          details: errorDetails,
+          status: response.status,
+        },
         { status: response.status }
       )
     }
 
-    const data = await response.json()
-    console.log(`✅ Commande Shopify créée: ${data.order.name}`)
+    let data
+    try {
+      data = JSON.parse(responseText)
+    } catch (e) {
+      console.error('❌ Erreur parsing réponse JSON:', e)
+      throw new Error('Réponse invalide de Shopify')
+    }
+
+    console.log(`✅ Commande Shopify créée avec succès!`)
+    console.log(`   Numéro: ${data.order.name}`)
     console.log(`   ID: ${data.order.id}`)
     console.log(`   Total: ${data.order.total_price} ${data.order.currency_code}`)
     console.log(`   Statut financier: ${data.order.financial_status}`)
+    console.log(`   Email: ${data.order.email || 'Non fourni'}`)
     
     return NextResponse.json({
       success: true,
